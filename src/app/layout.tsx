@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "../components/header";
+import { GlobalBookContextProvider } from "@/context/bookContext";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,11 +16,10 @@ export default function RootLayout({
     <html
       lang="en"
     >
-      <body className="min-h-full flex flex-col bg-amber-100">
-        <header >
-          <Header />
-        </header>
-        {children}
+      <body >
+        <GlobalBookContextProvider>
+          {children}
+        </GlobalBookContextProvider>
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ export interface SetSelectedTagInterface {
 }
 
 export interface Book {
-  id: number;
+  _id: string;
   title: string;
   author: string;
   currentPage?: number;
@@ -18,3 +18,4 @@ export interface Book {
 }
 
 export type SelectedTag = typeof TAG_CONSTANTS[number];
+

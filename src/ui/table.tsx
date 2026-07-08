@@ -1,64 +1,100 @@
+import { GlobalBookContext } from "@/context/bookContext";
 import { Book, SelectedTag } from "@/types/interfaces";
-import { FAVOURITE_BOOK_CONTENT_HEAD, INTEREST_BOOK_CONTENT_HEAD, MOCK_BOOKS, READ_CONTENT_HEAD, READING_CONTENT_HEAD } from "@/utiles/constants"
+import { FAVOURITE_BOOK_CONTENT_HEAD, INTEREST_BOOK_CONTENT_HEAD, READ_CONTENT_HEAD, READING_CONTENT_HEAD } from "@/utiles/constants"
+import handleDeleteButton from "@/utiles/deleteBookDetails";
+import { useRouter } from "next/navigation";
+import { useContext } from "react";
 import { JSX } from "react/jsx-runtime";
 
-function ReadingRows({ books }: { books: Book[] }) {
+function ReadingRows({ books, setSelectedTag }: { books: Book[], setSelectedTag: (tag: SelectedTag) => void }) {
+  const router = useRouter();
   return (
     <>
       {books.map((book, index) => (
-        <tr key={book.id} className="text-center border-b">
+        <tr key={book._id} className="text-center border-b">
           <td className="p-2">{index + 1}</td>
           <td className="p-2">{book.title}</td>
           <td className="p-2">{book.author}</td>
           <td className="p-2">{book.currentPage ?? 0}</td>
+          <td className="p-2"><button onClick={() => {
+            router.push(`/update-book?_id=${book._id}`)
+          }}>Update</button>
+            <button onClick={async () => {
+              await handleDeleteButton(book._id)
+              setSelectedTag("dashboard")
+            }}>Delete</button></td>
         </tr>
       ))}
     </>
   );
 }
 
-function ReadRows({ books }: { books: Book[] }) {
+function ReadRows({ books, setSelectedTag }: { books: Book[], setSelectedTag: (tag: SelectedTag) => void }) {
+  const router = useRouter();
   return (
     <>
       {books.map((book, index) => (
-        <tr key={book.id} className="text-center border-b">
+        <tr key={book._id} className="text-center border-b">
           <td className="p-2">{index + 1}</td>
           <td className="p-2">{book.title}</td>
           <td className="p-2">{book.author}</td>
           <td className="p-2">{book.durationToComplete ?? "N/A"}</td>
           <td className="p-2 text-left">{book.notes ?? ""}</td>
+          <td className="p-2"><button onClick={() => {
+            router.push(`/update-book?_id=${book._id}`)
+          }}>Update</button><button onClick={async () => {
+            await handleDeleteButton(book._id)
+            setSelectedTag("dashboard")
+          }}>Delete</button></td>
         </tr>
       ))}
     </>
   );
 }
 
-function InterestRows({ books }: { books: Book[] }) {
+function InterestRows({ books, setSelectedTag }: { books: Book[], setSelectedTag: (tag: SelectedTag) => void }) {
+  const router = useRouter();
   return (
     <>
       {books.map((book, index) => (
-        <tr key={book.id} className="text-center border-b">
+        <tr key={book._id} className="text-center border-b">
           <td className="p-2">{index + 1}</td>
           <td className="p-2">{book.title}</td>
           <td className="p-2">{book.author}</td>
           <td className="p-2">{book.suggestedBy ?? "Unknown"}</td>
           <td className="p-2 text-left">{book.notes ?? ""}</td>
+          <td className="p-2"><button onClick={() => {
+            router.push(`/update-book?_id=${book._id}`)
+          }}>Update</button>
+            <button onClick={async () => {
+              await handleDeleteButton(book._id)
+              setSelectedTag("dashboard")
+            }}>Delete</button></td>
         </tr>
       ))}
     </>
   );
 }
 
-function FavouriteRows({ books }: { books: Book[] }) {
+function FavouriteRows({ books, setSelectedTag }: { books: Book[], setSelectedTag: (tag: SelectedTag) => void }) {
+  const router = useRouter();
+
   return (
     <>
       {books.map((book, index) => (
-        <tr key={book.id} className="text-center border-b">
+        <tr key={book._id} className="text-center border-b">
           <td className="p-2">{index + 1}</td>
           <td className="p-2">{book.title}</td>
           <td className="p-2">{book.author}</td>
           <td className="p-2">{book.readStatus ?? "Plan to Read"}</td>
           <td className="p-2 text-left">{book.notes ?? ""}</td>
+          <td className="p-2"><button onClick={() => {
+            router.push(`/update-book?_id=${book._id}`)
+          }}>Update</button>
+            <button onClick={async () => {
+              await handleDeleteButton(book._id)
+              setSelectedTag("dashboard")
+            }}>Delete</button></td>
         </tr>
       ))}
     </>
@@ -71,6 +107,11 @@ export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
     return null
   }
 
+  const context = useContext(GlobalBookContext);
+  if (!context) {
+    return <p>Error: GlobalBookContext must be used within a GlobalBookContextProvider</p>;
+  }
+
   const tableHeadMap = {
     reading: READING_CONTENT_HEAD,
     read: READ_CONTENT_HEAD,
@@ -80,18 +121,18 @@ export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
 
   const tableHead = tableHeadMap[selectedTag]
 
-  const tableBody = MOCK_BOOKS.filter((book) => book.category === selectedTag)
+  const tableBody = context.allBookDetails.filter((book) => book.category === selectedTag)
 
   const tableBodyData = (): JSX.Element => {
     switch (selectedTag) {
       case "reading":
-        return <ReadingRows books={tableBody} />
+        return <ReadingRows books={tableBody} setSelectedTag={context.setSelectedTag} />
       case "read":
-        return <ReadRows books={tableBody} />
+        return <ReadRows books={tableBody} setSelectedTag={context.setSelectedTag} />
       case "interest":
-        return <InterestRows books={tableBody} />
+        return <InterestRows books={tableBody} setSelectedTag={context.setSelectedTag} />
       case "favourite":
-        return <FavouriteRows books={tableBody} />
+        return <FavouriteRows books={tableBody} setSelectedTag={context.setSelectedTag} />
       default:
         return <></>
     }
