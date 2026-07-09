@@ -1,8 +1,8 @@
-import { TAG_CONSTANTS } from "@/utiles/constants";
+import { TAG_CONSTANTS } from '@/utiles/constants';
 
 export interface SetSelectedTagInterface {
-  setSelectedTag: (tag: SelectedTag) => void,
-  selectedTag: SelectedTag
+  setSelectedTag: (tag: SelectedTag) => void;
+  selectedTag: SelectedTag;
 }
 
 export interface Book {
@@ -12,10 +12,9 @@ export interface Book {
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
-  readStatus?: "Completed" | "Plan to Read" | "In Progress";
+  readStatus?: 'Completed' | 'Plan to Read' | 'In Progress';
   notes?: string;
-  category: "reading" | "read" | "interest" | "favourite";
+  category: 'reading' | 'read' | 'interest' | 'favourite';
 }
 
-export type SelectedTag = typeof TAG_CONSTANTS[number];
-
+export type SelectedTag = (typeof TAG_CONSTANTS)[number];

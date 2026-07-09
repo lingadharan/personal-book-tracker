@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 
 export interface IBook {
   title: string;
@@ -9,45 +9,45 @@ export interface IBook {
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
-  readStatus?: "completed" | "need-to-plan" | "in-progress";
+  readStatus?: 'completed' | 'need-to-plan' | 'in-progress';
   notes?: string;
-  category: "reading" | "read" | "interest" | "favourite";
+  category: 'reading' | 'read' | 'interest' | 'favourite';
 }
 
 export default function UpdateBookComponent() {
   const searchParams = useSearchParams();
-  const _id = searchParams.get("_id");
+  const _id = searchParams.get('_id');
   if (!_id) {
-    return <p>Something went wrong on Update book page. Id not valid</p>
+    return <p>Something went wrong on Update book page. Id not valid</p>;
   }
-
-
 
   const router = useRouter();
-  const readStatusOptions = ["completed", "in-progress", "need-to-plan"];
+  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const initialNewBookDetails: IBook = {
-    title: "",
-    author: "",
+    title: '',
+    author: '',
     currentPage: 0,
-    durationToComplete: "0",
-    suggestedBy: "",
-    readStatus: "completed",
-    notes: "",
-    category: "reading"
-  }
+    durationToComplete: '0',
+    suggestedBy: '',
+    readStatus: 'completed',
+    notes: '',
+    category: 'reading',
+  };
 
-  const [updateBookDetails, setNewBookDetails] = useState<IBook>(initialNewBookDetails)
+  const [updateBookDetails, setNewBookDetails] = useState<IBook>(
+    initialNewBookDetails
+  );
 
   useEffect(() => {
     const getBookById = async () => {
-      const response = await fetch(`http://localhost:5000/api?_id=${_id}`)
+      const response = await fetch(`http://localhost:5000/api?_id=${_id}`);
       const result = await response.json();
       if (result.data) {
-        setNewBookDetails(result.data)
+        setNewBookDetails(result.data);
       }
-    }
+    };
     getBookById();
-  }, [])
+  }, []);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -59,9 +59,7 @@ export default function UpdateBookComponent() {
     }));
   };
 
-  const handleCategoryChange = (
-    category: IBook["category"]
-  ) => {
+  const handleCategoryChange = (category: IBook['category']) => {
     setNewBookDetails((prev) => ({
       ...prev,
       category,
@@ -73,7 +71,6 @@ export default function UpdateBookComponent() {
     try {
       const { author, title, notes, category, currentPage } = updateBookDetails;
 
-      // 1. Build the base object using shorthand property names
       const updateBookBody: Record<string, any> = {
         _id,
         author,
@@ -83,18 +80,19 @@ export default function UpdateBookComponent() {
         currentPage,
       };
 
-      // 2. Conditionally add specific fields based on category
       if (category === 'read') {
-        updateBookBody.durationToComplete = updateBookDetails.durationToComplete;
+        updateBookBody.durationToComplete =
+          updateBookDetails.durationToComplete;
       } else if (category === 'interest') {
         updateBookBody.suggestedBy = updateBookDetails.suggestedBy;
       } else if (category === 'favourite') {
         updateBookBody.readStatus = updateBookDetails.readStatus;
       } else if (category !== 'reading') {
-        // If it's none of the expected categories, reset, navigate, and exit early
         setNewBookDetails(initialNewBookDetails);
-        router.push("/");
-        throw new Error("Something went wrong on update book submission: Invalid category.");
+        router.push('/');
+        throw new Error(
+          'Something went wrong on update book submission: Invalid category.'
+        );
       }
 
       const response = await fetch('http://localhost:5000/api/update-book', {
@@ -109,19 +107,17 @@ export default function UpdateBookComponent() {
         throw new Error(`Server responded with status: ${response.status}`);
       }
 
-      // 4. Success cleanup
       setNewBookDetails(initialNewBookDetails);
-      router.push("/");
-
+      router.push('/');
     } catch (error) {
-      console.error("Error submitting book:", error);
+      console.error('Error submitting book:', error);
     }
   };
 
   const handleCancel = () => {
     setNewBookDetails(initialNewBookDetails);
-    router.push("/")
-  }
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-6 font-mono flex justify-center items-start">
@@ -167,24 +163,28 @@ export default function UpdateBookComponent() {
             Category <span className="text-red-500">*</span>
           </label>
           <div className="space-y-2 pl-2">
-            {(["Reading", "Read", "Interest", "Favourite"] as const).map((cat) => (
-              <label
-                key={cat}
-                className="flex items-center space-x-3 cursor-pointer select-none"
-              >
-                <input
-                  type="radio"
-                  name="category"
-                  required
-                  checked={updateBookDetails.category === cat.toLowerCase()}
-                  onChange={() =>
-                    handleCategoryChange(cat.toLowerCase() as IBook["category"])
-                  }
-                  className="accent-white h-4 w-4 bg-black border border-white"
-                />
-                <span>{cat}</span>
-              </label>
-            ))}
+            {(['Reading', 'Read', 'Interest', 'Favourite'] as const).map(
+              (cat) => (
+                <label
+                  key={cat}
+                  className="flex items-center space-x-3 cursor-pointer select-none"
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    required
+                    checked={updateBookDetails.category === cat.toLowerCase()}
+                    onChange={() =>
+                      handleCategoryChange(
+                        cat.toLowerCase() as IBook['category']
+                      )
+                    }
+                    className="accent-white h-4 w-4 bg-black border border-white"
+                  />
+                  <span>{cat}</span>
+                </label>
+              )
+            )}
           </div>
         </div>
 
@@ -201,9 +201,11 @@ export default function UpdateBookComponent() {
         </div>
 
         {/* Duration - Only visible if Category is 'Read' */}
-        {updateBookDetails.category === "read" && (
+        {updateBookDetails.category === 'read' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Duration (only Read)</label>
+            <label className="block text-sm font-bold">
+              Duration (only Read)
+            </label>
             <input
               type="text"
               name="durationToComplete"
@@ -216,9 +218,11 @@ export default function UpdateBookComponent() {
         )}
 
         {/* Suggested By - Only visible if Category is 'Interest' */}
-        {updateBookDetails.category === "interest" && (
+        {updateBookDetails.category === 'interest' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Suggested By (Interest)</label>
+            <label className="block text-sm font-bold">
+              Suggested By (Interest)
+            </label>
             <input
               type="text"
               name="suggestedBy"
@@ -230,9 +234,11 @@ export default function UpdateBookComponent() {
         )}
 
         {/* Read Status Dropdown - Only visible if Category is 'Favourite' */}
-        {updateBookDetails.category === "favourite" && (
+        {updateBookDetails.category === 'favourite' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Read Status (Favourite)</label>
+            <label className="block text-sm font-bold">
+              Read Status (Favourite)
+            </label>
             <select
               name="readStatus"
               value={updateBookDetails.readStatus}
@@ -240,7 +246,11 @@ export default function UpdateBookComponent() {
               className="w-48 bg-black border border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white cursor-pointer"
             >
               {readStatusOptions.map((status) => (
-                <option key={status} value={status} className="bg-black text-white">
+                <option
+                  key={status}
+                  value={status}
+                  className="bg-black text-white"
+                >
                   [{status}]
                 </option>
               ))}

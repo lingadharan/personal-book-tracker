@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { title } from "process";
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useRouter } from 'next/navigation';
+import { title } from 'process';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 
 export interface IBook {
   title: string;
@@ -10,26 +10,28 @@ export interface IBook {
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
-  readStatus?: "completed" | "need-to-plan" | "in-progress";
+  readStatus?: 'completed' | 'need-to-plan' | 'in-progress';
   notes?: string;
-  category: "reading" | "read" | "interest" | "favourite";
+  category: 'reading' | 'read' | 'interest' | 'favourite';
 }
 
 export default function NewBookComponent() {
   const router = useRouter();
-  const readStatusOptions = ["completed", "in-progress", "need-to-plan"];
+  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const initialNewBookDetails: IBook = {
-    title: "",
-    author: "",
+    title: '',
+    author: '',
     currentPage: 0,
-    durationToComplete: "0",
-    suggestedBy: "",
-    readStatus: "completed",
-    notes: "",
-    category: "reading"
-  }
+    durationToComplete: '0',
+    suggestedBy: '',
+    readStatus: 'completed',
+    notes: '',
+    category: 'reading',
+  };
 
-  const [newBookDetails, setNewBookDetails] = useState<IBook>(initialNewBookDetails)
+  const [newBookDetails, setNewBookDetails] = useState<IBook>(
+    initialNewBookDetails
+  );
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -37,13 +39,11 @@ export default function NewBookComponent() {
     const { name, value } = e.target;
     setNewBookDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'currentPage' ? Number(value) : value,
     }));
   };
 
-  const handleCategoryChange = (
-    category: IBook["category"]
-  ) => {
+  const handleCategoryChange = (category: IBook['category']) => {
     setNewBookDetails((prev) => ({
       ...prev,
       category,
@@ -54,8 +54,6 @@ export default function NewBookComponent() {
     e.preventDefault();
     try {
       const { author, title, notes, category, currentPage } = newBookDetails;
-
-      // 1. Build the base object using shorthand property names
       const newBookBody: Record<string, any> = {
         author,
         title,
@@ -64,7 +62,6 @@ export default function NewBookComponent() {
         currentPage,
       };
 
-      // 2. Conditionally add specific fields based on category
       if (category === 'read') {
         newBookBody.durationToComplete = newBookDetails.durationToComplete;
       } else if (category === 'interest') {
@@ -72,15 +69,16 @@ export default function NewBookComponent() {
       } else if (category === 'favourite') {
         newBookBody.readStatus = newBookDetails.readStatus;
       } else if (category !== 'reading') {
-        // If it's none of the expected categories, reset, navigate, and exit early
         setNewBookDetails(initialNewBookDetails);
-        router.push("/");
-        throw new Error("Something went wrong on new book submission: Invalid category.");
+        router.push('/');
+        throw new Error(
+          'Something went wrong on new book submission: Invalid category.'
+        );
       }
 
       const finalBookBody = {
-        books: [newBookBody]
-      }
+        books: [newBookBody],
+      };
 
       const response = await fetch('http://localhost:5000/api/add-book', {
         method: 'POST',
@@ -94,19 +92,17 @@ export default function NewBookComponent() {
         throw new Error(`Server responded with status: ${response.status}`);
       }
 
-      // 4. Success cleanup
       setNewBookDetails(initialNewBookDetails);
-      router.push("/");
-
+      router.push('/');
     } catch (error) {
-      console.error("Error submitting book:", error);
+      console.error('Error submitting book:', error);
     }
   };
 
   const handleCancel = () => {
     setNewBookDetails(initialNewBookDetails);
-    router.push("/")
-  }
+    router.push('/');
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-6 font-mono flex justify-center items-start">
@@ -152,24 +148,28 @@ export default function NewBookComponent() {
             Category <span className="text-red-500">*</span>
           </label>
           <div className="space-y-2 pl-2">
-            {(["Reading", "Read", "Interest", "Favourite"] as const).map((cat) => (
-              <label
-                key={cat}
-                className="flex items-center space-x-3 cursor-pointer select-none"
-              >
-                <input
-                  type="radio"
-                  name="category"
-                  required
-                  checked={newBookDetails.category === cat.toLowerCase()}
-                  onChange={() =>
-                    handleCategoryChange(cat.toLowerCase() as IBook["category"])
-                  }
-                  className="accent-white h-4 w-4 bg-black border border-white"
-                />
-                <span>{cat}</span>
-              </label>
-            ))}
+            {(['Reading', 'Read', 'Interest', 'Favourite'] as const).map(
+              (cat) => (
+                <label
+                  key={cat}
+                  className="flex items-center space-x-3 cursor-pointer select-none"
+                >
+                  <input
+                    type="radio"
+                    name="category"
+                    required
+                    checked={newBookDetails.category === cat.toLowerCase()}
+                    onChange={() =>
+                      handleCategoryChange(
+                        cat.toLowerCase() as IBook['category']
+                      )
+                    }
+                    className="accent-white h-4 w-4 bg-black border border-white"
+                  />
+                  <span>{cat}</span>
+                </label>
+              )
+            )}
           </div>
         </div>
 
@@ -186,9 +186,11 @@ export default function NewBookComponent() {
         </div>
 
         {/* Duration - Only visible if Category is 'Read' */}
-        {newBookDetails.category === "read" && (
+        {newBookDetails.category === 'read' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Duration (only Read)</label>
+            <label className="block text-sm font-bold">
+              Duration (only Read)
+            </label>
             <input
               type="text"
               name="durationToComplete"
@@ -201,9 +203,11 @@ export default function NewBookComponent() {
         )}
 
         {/* Suggested By - Only visible if Category is 'Interest' */}
-        {newBookDetails.category === "interest" && (
+        {newBookDetails.category === 'interest' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Suggested By (Interest)</label>
+            <label className="block text-sm font-bold">
+              Suggested By (Interest)
+            </label>
             <input
               type="text"
               name="suggestedBy"
@@ -215,9 +219,11 @@ export default function NewBookComponent() {
         )}
 
         {/* Read Status Dropdown - Only visible if Category is 'Favourite' */}
-        {newBookDetails.category === "favourite" && (
+        {newBookDetails.category === 'favourite' && (
           <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">Read Status (Favourite)</label>
+            <label className="block text-sm font-bold">
+              Read Status (Favourite)
+            </label>
             <select
               name="readStatus"
               value={newBookDetails.readStatus}
@@ -225,7 +231,11 @@ export default function NewBookComponent() {
               className="w-48 bg-black border border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white cursor-pointer"
             >
               {readStatusOptions.map((status) => (
-                <option key={status} value={status} className="bg-black text-white">
+                <option
+                  key={status}
+                  value={status}
+                  className="bg-black text-white"
+                >
                   [{status}]
                 </option>
               ))}

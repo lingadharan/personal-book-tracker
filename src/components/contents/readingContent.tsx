@@ -1,10 +1,14 @@
-import { SelectedTag } from "@/types/interfaces";
-import Table from "@/ui/table";
+import { SelectedTag } from '@/types/interfaces';
+import Table from '@/ui/table';
 
-export default function ReadingContent({selectedTag} : {selectedTag: SelectedTag}) {
+export default function ReadingContent({
+  selectedTag,
+}: {
+  selectedTag: SelectedTag;
+}) {
   return (
     <div>
-      <Table selectedTag={selectedTag}/>
+      <Table selectedTag={selectedTag} />
     </div>
-  )
+  );
 }
