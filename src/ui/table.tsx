@@ -172,11 +172,11 @@ function FavouriteRows({
 }
 
 export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
+  const context = useContext(GlobalBookContext);
   if (selectedTag === 'dashboard') {
     return null;
   }
 
-  const context = useContext(GlobalBookContext);
   if (!context) {
     return (
       <p>

@@ -14,6 +14,9 @@ export default async function handleDeleteButton(_id: string) {
       alert('Delete was successfully.');
     }
   } catch (error) {
-    console.log('Something went wrong during deletion of the book details.');
+    console.error(
+      'Something went wrong during deletion of the book details: ',
+      error
+    );
   }
 }

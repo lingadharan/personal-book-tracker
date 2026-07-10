@@ -1,7 +1,8 @@
 'use client';
 
+import { useBookContext } from '@/context/bookContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 
 export interface IBook {
   title: string;
@@ -15,14 +16,7 @@ export interface IBook {
 }
 
 export default function UpdateBookComponent() {
-  const searchParams = useSearchParams();
-  const _id = searchParams.get('_id');
-  if (!_id) {
-    return <p>Something went wrong on Update book page. Id not valid</p>;
-  }
-
-  const router = useRouter();
-  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
+  const { setSelectedTag } = useBookContext();
   const initialNewBookDetails: IBook = {
     title: '',
     author: '',
@@ -33,12 +27,14 @@ export default function UpdateBookComponent() {
     notes: '',
     category: 'reading',
   };
-
+  const searchParams = useSearchParams();
+  const _id = searchParams.get('_id');
+  const router = useRouter();
   const [updateBookDetails, setNewBookDetails] = useState<IBook>(
     initialNewBookDetails
   );
-
   useEffect(() => {
+    if (!_id) return;
     const getBookById = async () => {
       const response = await fetch(`http://localhost:5000/api?_id=${_id}`);
       const result = await response.json();
@@ -47,7 +43,13 @@ export default function UpdateBookComponent() {
       }
     };
     getBookById();
-  }, []);
+  }, [_id]);
+
+  if (!_id) {
+    return <p>Something went wrong on Update book page. Id not valid</p>;
+  }
+
+  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -71,8 +73,7 @@ export default function UpdateBookComponent() {
     try {
       const { author, title, notes, category, currentPage } = updateBookDetails;
 
-      const updateBookBody: Record<string, any> = {
-        _id,
+      const updateBookBody: IBook = {
         author,
         title,
         notes,
@@ -100,7 +101,7 @@ export default function UpdateBookComponent() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updateBookBody),
+        body: JSON.stringify({ ...updateBookBody, _id }),
       });
 
       if (!response.ok) {
@@ -108,6 +109,7 @@ export default function UpdateBookComponent() {
       }
 
       setNewBookDetails(initialNewBookDetails);
+      setSelectedTag('dashboard');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);

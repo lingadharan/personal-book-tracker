@@ -1,5 +1,3 @@
-import { Book } from '@/types/interfaces';
-
 export const TAG_CONSTANTS = [
   'dashboard',
   'reading',

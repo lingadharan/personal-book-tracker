@@ -1,8 +1,8 @@
 'use client';
 
+import { useBookContext } from '@/context/bookContext';
 import { useRouter } from 'next/navigation';
-import { title } from 'process';
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 
 export interface IBook {
   title: string;
@@ -16,6 +16,7 @@ export interface IBook {
 }
 
 export default function NewBookComponent() {
+  const { setSelectedTag } = useBookContext();
   const router = useRouter();
   const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const initialNewBookDetails: IBook = {
@@ -54,7 +55,7 @@ export default function NewBookComponent() {
     e.preventDefault();
     try {
       const { author, title, notes, category, currentPage } = newBookDetails;
-      const newBookBody: Record<string, any> = {
+      const newBookBody: Record<string, string | number | undefined> = {
         author,
         title,
         notes,
@@ -93,6 +94,7 @@ export default function NewBookComponent() {
       }
 
       setNewBookDetails(initialNewBookDetails);
+      setSelectedTag('dashboard');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);
