@@ -112,7 +112,6 @@ export default function NewBookComponent() {
         onSubmit={handleSubmit}
         className="w-full max-w-xl border border-dashed border-gray-700 p-6 space-y-6"
       >
-        {/* Book Name */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Book Name <span className="text-red-500">*</span>
@@ -128,7 +127,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Author */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Author <span className="text-red-500">*</span>
@@ -144,7 +142,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Category (Radio-style selection to match the mockup UI) */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Category <span className="text-red-500">*</span>
@@ -175,7 +172,6 @@ export default function NewBookComponent() {
           </div>
         </div>
 
-        {/* Page No */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">Page No</label>
           <input
@@ -187,7 +183,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Duration - Only visible if Category is 'Read' */}
         {newBookDetails.category === 'read' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -204,7 +199,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Suggested By - Only visible if Category is 'Interest' */}
         {newBookDetails.category === 'interest' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -220,7 +214,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Read Status Dropdown - Only visible if Category is 'Favourite' */}
         {newBookDetails.category === 'favourite' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -245,7 +238,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Notes */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">Notes</label>
           <textarea
@@ -258,7 +250,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Form Action Buttons */}
         <div className="flex justify-center space-x-12 pt-4">
           <button
             type="button"
