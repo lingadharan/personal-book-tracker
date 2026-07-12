@@ -2,7 +2,7 @@
 
 import { useBookContext } from '@/context/bookContext';
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
 
 export interface IBook {
   title: string;
@@ -15,7 +15,7 @@ export interface IBook {
   category: 'reading' | 'read' | 'interest' | 'favourite';
 }
 
-export default function UpdateBookComponent() {
+function UpdateBookComponent() {
   const { setSelectedTag } = useBookContext();
   const initialNewBookDetails: IBook = {
     title: '',
@@ -127,7 +127,6 @@ export default function UpdateBookComponent() {
         onSubmit={handleSubmit}
         className="w-full max-w-xl border border-dashed border-gray-700 p-6 space-y-6"
       >
-        {/* Book Name */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Book Name <span className="text-red-500">*</span>
@@ -143,7 +142,6 @@ export default function UpdateBookComponent() {
           />
         </div>
 
-        {/* Author */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Author <span className="text-red-500">*</span>
@@ -159,7 +157,6 @@ export default function UpdateBookComponent() {
           />
         </div>
 
-        {/* Category (Radio-style selection to match the mockup UI) */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">
             Category <span className="text-red-500">*</span>
@@ -190,7 +187,6 @@ export default function UpdateBookComponent() {
           </div>
         </div>
 
-        {/* Page No */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">Page No</label>
           <input
@@ -202,7 +198,6 @@ export default function UpdateBookComponent() {
           />
         </div>
 
-        {/* Duration - Only visible if Category is 'Read' */}
         {updateBookDetails.category === 'read' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -219,7 +214,6 @@ export default function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Suggested By - Only visible if Category is 'Interest' */}
         {updateBookDetails.category === 'interest' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -235,7 +229,6 @@ export default function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Read Status Dropdown - Only visible if Category is 'Favourite' */}
         {updateBookDetails.category === 'favourite' && (
           <div className="space-y-2 transition-all duration-200">
             <label className="block text-sm font-bold">
@@ -260,7 +253,6 @@ export default function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Notes */}
         <div className="space-y-2">
           <label className="block text-sm font-bold">Notes</label>
           <textarea
@@ -273,7 +265,6 @@ export default function UpdateBookComponent() {
           />
         </div>
 
-        {/* Form Action Buttons */}
         <div className="flex justify-center space-x-12 pt-4">
           <button
             type="button"
@@ -291,5 +282,19 @@ export default function UpdateBookComponent() {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function UpdateBookPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black text-white p-6 font-mono flex justify-center items-center">
+          Loading book details...
+        </div>
+      }
+    >
+      <UpdateBookComponent />
+    </Suspense>
   );
 }
