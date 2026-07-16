@@ -11,6 +11,7 @@ export const READING_CONTENT_HEAD = [
   'Book Name',
   'Author',
   'Page No',
+  'Notes',
   'Actions',
 ];
 

@@ -6,15 +6,35 @@ export default function Tags({
   selectedTag,
 }: SetSelectedTagInterface) {
   return (
-    <div className="pt-6">
-      {TAG_CONSTANTS.map((val, ind: number) => (
-        <span
+    <div className="flex flex-wrap justify-center gap-2 pt-6 sm:gap-3 lg:gap-4">
+      {TAG_CONSTANTS.map((val, ind) => (
+        <button
           key={ind}
+          type="button"
           onClick={() => setSelectedTag(val)}
-          className={`p-2 text-2xl hover:text-gray-600 ${selectedTag === val && 'font-bold '}`}
+          className={`
+        rounded-[15px]
+        px-3
+        py-2
+        text-sm
+        font-medium
+        transition-all
+        duration-200
+        hover:bg-gray-200
+        hover:text-gray-700
+
+        sm:text-base
+        lg:text-lg
+
+        ${
+          selectedTag === val
+            ? 'bg-amber-200 font-semibold text-amber-900'
+            : 'bg-gray-100 text-gray-600'
+        }
+      `}
         >
           {val}
-        </span>
+        </button>
       ))}
     </div>
   );

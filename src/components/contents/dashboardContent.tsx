@@ -25,37 +25,64 @@ export default function DashBoardContent() {
   );
 
   return (
-    <div className=" w-full h-screen bg-amber-200 grid grid-cols-2 grid-rows-2 rounded-2xl gap-4 p-4">
-      <div className=" flex flex-col h-full">
-        <h3>Reading</h3>
-        <ol className=" list-decimal list-inside flex-1 overflow-y-auto space-y-3 pr-[30px]">
-          {readingBooksName.map((book) => {
-            return <li key={book._id}>{book.title}</li>;
-          })}
+    <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-amber-100 p-4 sm:grid-cols-2 xl:grid-cols-4">
+      {/* Reading */}
+      <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+          Reading
+        </h3>
+
+        <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
+          {readingBooksName.map((book) => (
+            <li key={book._id} className="text-sm text-gray-700">
+              {book.title}
+            </li>
+          ))}
         </ol>
       </div>
-      <div className=" flex flex-col h-full">
-        <h3>Read</h3>
-        <ol className=" list-decimal list-inside flex-1 overflow-y-auto space-y-3">
-          {readBooksName.map((book) => {
-            return <li key={book._id}>{book.title}</li>;
-          })}
+
+      {/* Read */}
+      <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+          Read
+        </h3>
+
+        <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
+          {readBooksName.map((book) => (
+            <li key={book._id} className="text-sm text-gray-700">
+              {book.title}
+            </li>
+          ))}
         </ol>
       </div>
-      <div className=" flex flex-col h-full">
-        <h3>Interesting Books</h3>
-        <ol className=" list-decimal list-inside flex-1 overflow-y-auto space-y-3">
-          {interestBookName.map((book) => {
-            return <li key={book._id}>{book.title}</li>;
-          })}
+
+      {/* Interesting */}
+      <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+          Interesting Books
+        </h3>
+
+        <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
+          {interestBookName.map((book) => (
+            <li key={book._id} className="text-sm text-gray-700">
+              {book.title}
+            </li>
+          ))}
         </ol>
       </div>
-      <div className=" flex flex-col h-full">
-        <h3>Favourite Books</h3>
-        <ol className=" list-decimal list-inside flex-1 overflow-y-auto space-y-3">
-          {favouriteBookName.map((book) => {
-            return <li key={book._id}>{book.title}</li>;
-          })}
+
+      {/* Favourite */}
+      <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+          Favourite Books
+        </h3>
+
+        <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
+          {favouriteBookName.map((book) => (
+            <li key={book._id} className="text-sm text-gray-700">
+              {book.title}
+            </li>
+          ))}
         </ol>
       </div>
     </div>
