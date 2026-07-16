@@ -1,245 +1,132 @@
+import { useContext } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { GlobalBookContext } from '@/context/bookContext';
 import { Book, SelectedTag } from '@/types/interfaces';
+
 import {
   FAVOURITE_BOOK_CONTENT_HEAD,
   INTEREST_BOOK_CONTENT_HEAD,
   READ_CONTENT_HEAD,
   READING_CONTENT_HEAD,
 } from '@/utiles/constants';
+
 import handleDeleteButton from '@/utiles/deleteBookDetails';
-import { useRouter } from 'next/navigation';
-import { useContext } from 'react';
-import { JSX } from 'react/jsx-runtime';
 
-function ReadingRows({
-  books,
-  setSelectedTag,
-}: {
-  books: Book[];
-  setSelectedTag: (tag: SelectedTag) => void;
-}) {
-  const router = useRouter();
-  return (
-    <>
-      {books.map((book, index) => (
-        <tr key={book._id} className="text-center border-b">
-          <td className="p-2">{index + 1}</td>
-          <td className="p-2">{book.title}</td>
-          <td className="p-2">{book.author}</td>
-          <td className="p-2">{book.currentPage ?? 0}</td>
-          <td className="p-2">
-            <button
-              onClick={() => {
-                router.push(`/update-book?_id=${book._id}`);
-              }}
-            >
-              Update
-            </button>
-            <button
-              onClick={async () => {
-                await handleDeleteButton(book._id);
-                setSelectedTag('dashboard');
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </>
-  );
-}
+type TableConfig = {
+  headers: string[];
+  extraColumn: (book: Book) => string | number;
+};
 
-function ReadRows({
-  books,
-  setSelectedTag,
-}: {
-  books: Book[];
-  setSelectedTag: (tag: SelectedTag) => void;
-}) {
-  const router = useRouter();
-  return (
-    <>
-      {books.map((book, index) => (
-        <tr key={book._id} className="text-center border-b">
-          <td className="p-2">{index + 1}</td>
-          <td className="p-2">{book.title}</td>
-          <td className="p-2">{book.author}</td>
-          <td className="p-2">{book.durationToComplete ?? 'N/A'}</td>
-          <td className="p-2 text-left">{book.notes ?? ''}</td>
-          <td className="p-2">
-            <button
-              onClick={() => {
-                router.push(`/update-book?_id=${book._id}`);
-              }}
-            >
-              Update
-            </button>
-            <button
-              onClick={async () => {
-                await handleDeleteButton(book._id);
-                setSelectedTag('dashboard');
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </>
-  );
-}
-
-function InterestRows({
-  books,
-  setSelectedTag,
-}: {
-  books: Book[];
-  setSelectedTag: (tag: SelectedTag) => void;
-}) {
-  const router = useRouter();
-  return (
-    <>
-      {books.map((book, index) => (
-        <tr key={book._id} className="text-center border-b">
-          <td className="p-2">{index + 1}</td>
-          <td className="p-2">{book.title}</td>
-          <td className="p-2">{book.author}</td>
-          <td className="p-2">{book.suggestedBy ?? 'Unknown'}</td>
-          <td className="p-2 text-left">{book.notes ?? ''}</td>
-          <td className="p-2">
-            <button
-              onClick={() => {
-                router.push(`/update-book?_id=${book._id}`);
-              }}
-            >
-              Update
-            </button>
-            <button
-              onClick={async () => {
-                await handleDeleteButton(book._id);
-                setSelectedTag('dashboard');
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </>
-  );
-}
-
-function FavouriteRows({
-  books,
-  setSelectedTag,
-}: {
-  books: Book[];
-  setSelectedTag: (tag: SelectedTag) => void;
-}) {
-  const router = useRouter();
-
-  return (
-    <>
-      {books.map((book, index) => (
-        <tr key={book._id} className="text-center border-b">
-          <td className="p-2">{index + 1}</td>
-          <td className="p-2">{book.title}</td>
-          <td className="p-2">{book.author}</td>
-          <td className="p-2">{book.readStatus ?? 'Plan to Read'}</td>
-          <td className="p-2 text-left">{book.notes ?? ''}</td>
-          <td className="p-2">
-            <button
-              onClick={() => {
-                router.push(`/update-book?_id=${book._id}`);
-              }}
-            >
-              Update
-            </button>
-            <button
-              onClick={async () => {
-                await handleDeleteButton(book._id);
-                setSelectedTag('dashboard');
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      ))}
-    </>
-  );
-}
+const TABLE_CONFIG: Record<Exclude<SelectedTag, 'dashboard'>, TableConfig> = {
+  reading: {
+    headers: READING_CONTENT_HEAD,
+    extraColumn: (book) => book.currentPage ?? 0,
+  },
+  read: {
+    headers: READ_CONTENT_HEAD,
+    extraColumn: (book) => book.durationToComplete ?? 'N/A',
+  },
+  interest: {
+    headers: INTEREST_BOOK_CONTENT_HEAD,
+    extraColumn: (book) => book.suggestedBy ?? 'Unknown',
+  },
+  favourite: {
+    headers: FAVOURITE_BOOK_CONTENT_HEAD,
+    extraColumn: (book) => book.readStatus ?? 'Plan to Read',
+  },
+};
 
 export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
+  const router = useRouter();
   const context = useContext(GlobalBookContext);
-  if (selectedTag === 'dashboard') {
-    return null;
-  }
+
+  if (selectedTag === 'dashboard') return null;
 
   if (!context) {
     return (
       <p>
-        Error: GlobalBookContext must be used within a GlobalBookContextProvider
+        Error: GlobalBookContext must be used within a
+        GlobalBookContextProvider.
       </p>
     );
   }
 
-  const tableHeadMap = {
-    reading: READING_CONTENT_HEAD,
-    read: READ_CONTENT_HEAD,
-    interest: INTEREST_BOOK_CONTENT_HEAD,
-    favourite: FAVOURITE_BOOK_CONTENT_HEAD,
-  };
+  const config = TABLE_CONFIG[selectedTag];
 
-  const tableHead = tableHeadMap[selectedTag];
-
-  const tableBody = context.allBookDetails.filter(
+  const books = context.allBookDetails.filter(
     (book) => book.category === selectedTag
   );
 
-  const tableBodyData = (): JSX.Element => {
-    switch (selectedTag) {
-      case 'reading':
-        return (
-          <ReadingRows
-            books={tableBody}
-            setSelectedTag={context.setSelectedTag}
-          />
-        );
-      case 'read':
-        return (
-          <ReadRows books={tableBody} setSelectedTag={context.setSelectedTag} />
-        );
-      case 'interest':
-        return (
-          <InterestRows
-            books={tableBody}
-            setSelectedTag={context.setSelectedTag}
-          />
-        );
-      case 'favourite':
-        return (
-          <FavouriteRows
-            books={tableBody}
-            setSelectedTag={context.setSelectedTag}
-          />
-        );
-      default:
-        return <></>;
-    }
-  };
-
   return (
-    <table className=" w-full">
-      <thead>
-        <tr>
-          {tableHead.map((head) => (
-            <th key={head}>{head}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{tableBodyData()}</tbody>
-    </table>
+    <div className="mt-6 overflow-x-auto rounded-xl bg-white shadow">
+      <table className="min-w-full border-collapse">
+        <thead className="bg-amber-100">
+          <tr>
+            {config.headers.map((header) => (
+              <th
+                key={header}
+                className="px-4 py-3 text-center text-sm font-semibold text-amber-900"
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+
+        <tbody>
+          {books.length === 0 ? (
+            <tr>
+              <td
+                colSpan={config.headers.length}
+                className="py-8 text-center text-gray-500"
+              >
+                No books found.
+              </td>
+            </tr>
+          ) : (
+            books.map((book, index) => (
+              <tr
+                key={book._id}
+                className="border-b hover:bg-amber-50 transition-colors"
+              >
+                <td className="px-4 py-3 text-center">{index + 1}</td>
+
+                <td className="px-4 py-3">{book.title}</td>
+
+                <td className="px-4 py-3">{book.author}</td>
+
+                <td className="px-4 py-3">{config.extraColumn(book)}</td>
+
+                <td className="px-4 py-3">{book.notes ?? ''}</td>
+
+                <td className="px-4 py-3">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <button
+                      onClick={() =>
+                        router.push(`/update-book?_id=${book._id}`)
+                      }
+                      className="rounded-md bg-blue-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-blue-600"
+                    >
+                      Update
+                    </button>
+
+                    <button
+                      onClick={async () => {
+                        await handleDeleteButton(book._id);
+                        context.setSelectedTag('dashboard');
+                      }}
+                      className="rounded-md bg-red-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   );
 }

@@ -27,5 +27,5 @@ export default function MainContent({
         return <></>;
     }
   };
-  return <div className=" p-3">{selectedContent()}</div>;
+  return <div className=" p-3 min-h-screen">{selectedContent()}</div>;
 }

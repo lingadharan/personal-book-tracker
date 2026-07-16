@@ -122,51 +122,61 @@ function UpdateBookComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 font-mono flex justify-center items-start">
+    <div className="min-h-screen bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-xl border border-dashed border-gray-700 p-6 space-y-6"
+        className="mx-auto w-full max-w-3xl rounded-2xl bg-white p-6 shadow-lg sm:p-8"
       >
-        <div className="space-y-2">
-          <label className="block text-sm font-bold">
+        <h2 className="mb-8 text-center text-3xl font-bold text-amber-900">
+          Update Book
+        </h2>
+
+        {/* Book Name */}
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-amber-900">
             Book Name <span className="text-red-500">*</span>
           </label>
+
           <input
             type="text"
             name="title"
             required
             value={updateBookDetails.title}
             onChange={handleInputChange}
-            className="w-full bg-black border-b border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white"
             placeholder="Enter book name..."
+            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
           />
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-bold">
+        {/* Author */}
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-amber-900">
             Author <span className="text-red-500">*</span>
           </label>
+
           <input
             type="text"
             name="author"
             required
             value={updateBookDetails.author}
             onChange={handleInputChange}
-            className="w-full bg-black border-b border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white"
             placeholder="Enter author..."
+            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
           />
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-bold">
+        {/* Category */}
+        <div className="mb-6">
+          <label className="mb-4 block font-semibold text-amber-900">
             Category <span className="text-red-500">*</span>
           </label>
-          <div className="space-y-2 pl-2">
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {(['Reading', 'Read', 'Interest', 'Favourite'] as const).map(
               (cat) => (
                 <label
                   key={cat}
-                  className="flex items-center space-x-3 cursor-pointer select-none"
+                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 transition hover:bg-amber-100"
                 >
                   <input
                     type="radio"
@@ -178,7 +188,7 @@ function UpdateBookComponent() {
                         cat.toLowerCase() as IBook['category']
                       )
                     }
-                    className="accent-white h-4 w-4 bg-black border border-white"
+                    className="accent-amber-600"
                   />
                   <span>{cat}</span>
                 </label>
@@ -187,97 +197,109 @@ function UpdateBookComponent() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <label className="block text-sm font-bold">Page No</label>
+        {/* Page No */}
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-amber-900">
+            Page No
+          </label>
+
           <input
             type="number"
             name="currentPage"
             value={updateBookDetails.currentPage}
             onChange={handleInputChange}
-            className="w-32 bg-black border border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white"
+            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
           />
         </div>
 
+        {/* Read */}
         {updateBookDetails.category === 'read' && (
-          <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">
-              Duration (only Read)
+          <div className="mb-6">
+            <label className="mb-2 block font-semibold text-amber-900">
+              Duration to Complete
             </label>
+
             <input
               type="text"
               name="durationToComplete"
               value={updateBookDetails.durationToComplete}
               onChange={handleInputChange}
-              className="w-32 bg-black border border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white"
-              placeholder="e.g. 5 days"
+              placeholder="Example: 5 days"
+              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
             />
           </div>
         )}
 
+        {/* Interest */}
         {updateBookDetails.category === 'interest' && (
-          <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">
-              Suggested By (Interest)
+          <div className="mb-6">
+            <label className="mb-2 block font-semibold text-amber-900">
+              Suggested By
             </label>
+
             <input
               type="text"
               name="suggestedBy"
               value={updateBookDetails.suggestedBy}
               onChange={handleInputChange}
-              className="w-full bg-black border-b border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white"
+              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
             />
           </div>
         )}
 
+        {/* Favourite */}
         {updateBookDetails.category === 'favourite' && (
-          <div className="space-y-2 transition-all duration-200">
-            <label className="block text-sm font-bold">
-              Read Status (Favourite)
+          <div className="mb-6">
+            <label className="mb-2 block font-semibold text-amber-900">
+              Read Status
             </label>
+
             <select
               name="readStatus"
               value={updateBookDetails.readStatus}
               onChange={handleInputChange}
-              className="w-48 bg-black border border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white cursor-pointer"
+              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
             >
               {readStatusOptions.map((status) => (
-                <option
-                  key={status}
-                  value={status}
-                  className="bg-black text-white"
-                >
-                  [{status}]
+                <option key={status} value={status}>
+                  {status}
                 </option>
               ))}
             </select>
           </div>
         )}
 
-        <div className="space-y-2">
-          <label className="block text-sm font-bold">Notes</label>
+        {/* Notes */}
+        <div className="mb-8">
+          <label className="mb-2 block font-semibold text-amber-900">
+            Notes
+          </label>
+
           <textarea
             name="notes"
+            rows={4}
             value={updateBookDetails.notes}
             onChange={handleInputChange}
-            rows={3}
-            className="w-full bg-black border-b border-white focus:outline-none focus:border-gray-400 py-1 px-2 text-white resize-none"
-            placeholder="Add notes..."
+            placeholder="Write your thoughts about this book..."
+            className="w-full resize-none rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
           />
         </div>
 
-        <div className="flex justify-center space-x-12 pt-4">
+        {/* Buttons */}
+        <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
           <button
             type="button"
             onClick={handleCancel}
-            className="px-4 py-2 hover:bg-white hover:text-black border border-transparent hover:border-white transition-colors duration-150 font-bold"
+            className="rounded-lg border border-amber-400 px-6 py-3 font-semibold text-amber-900 transition hover:bg-amber-100"
           >
             Cancel
           </button>
+
           <button
-            onSubmit={handleSubmit}
-            className="px-4 py-2 border border-white hover:bg-white hover:text-black transition-colors duration-150 font-bold"
+            type="submit"
+            className="rounded-lg bg-amber-600 px-6 py-3 font-semibold text-white transition hover:bg-amber-700"
           >
-            Save Book
+            Update Book
           </button>
         </div>
       </form>
