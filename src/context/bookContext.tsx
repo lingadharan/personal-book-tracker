@@ -2,7 +2,7 @@
 import { Book, SelectedTag } from '@/types/interfaces';
 import { createContext, ReactNode, useContext, useState } from 'react';
 
-interface IGlobalBookContext {
+export interface IGlobalBookContext {
   allBookDetails: Book[];
   setAllBookDetails: (books: Book[]) => void;
   selectedTag: SelectedTag;
