@@ -12,7 +12,7 @@ export interface Book {
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
-  readStatus?: 'Completed' | 'Plan to Read' | 'In Progress';
+  readStatus?: 'completed' | 'plan to read' | 'in Progress';
   notes?: string;
   category: 'reading' | 'read' | 'interest' | 'favourite';
 }
