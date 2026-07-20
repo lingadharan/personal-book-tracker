@@ -5,6 +5,7 @@ import Tags from '@/components/tags';
 import { useBookContext } from '@/context/bookContext';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { env } from '@/utiles/env';
 
 export default function HomeComponent() {
   const context = useBookContext();
@@ -17,7 +18,7 @@ export default function HomeComponent() {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/auth/me', {
+        const response = await fetch(`${env.backendURL}/auth/me`, {
           method: 'GET',
           credentials: 'include',
         });
@@ -45,7 +46,7 @@ export default function HomeComponent() {
     const getBookDetails = async () => {
       try {
         if (selectedTag !== 'dashboard') return;
-        const response = await fetch('http://localhost:5000/api', {
+        const response = await fetch(`${env.backendURL}`, {
           credentials: 'include',
         });
         const result = await response.json();

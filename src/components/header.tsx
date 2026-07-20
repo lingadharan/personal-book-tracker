@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { env } from '@/utiles/env';
 
 interface User {
   name: string;
@@ -21,7 +22,7 @@ export default function Header({ user }: HeaderProps) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/logout', {
+      const response = await fetch(`${env.backendURL}/auth/logout`, {
         method: 'POST',
         credentials: 'include',
       });

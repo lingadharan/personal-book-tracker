@@ -1,4 +1,5 @@
 'use client';
+import { env } from '@/utiles/env';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
@@ -7,7 +8,7 @@ function LoginContent() {
   const error = searchParams.get('error');
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = `${env.backendURL}/auth/google`;
   };
 
   return (

@@ -2,6 +2,7 @@
 
 import { useBookContext } from '@/context/bookContext';
 import { Book } from '@/types/interfaces';
+import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
 
@@ -87,7 +88,7 @@ function UpdateBookComponent() {
         );
       }
 
-      const response = await fetch('http://localhost:5000/api/update-book', {
+      const response = await fetch(`${env.backendURL}/update-book`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
