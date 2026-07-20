@@ -1,6 +1,7 @@
 'use client';
 
 import { useBookContext } from '@/context/bookContext';
+import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent } from 'react';
 
@@ -81,7 +82,7 @@ export default function NewBookComponent() {
         books: [newBookBody],
       };
 
-      const response = await fetch('http://localhost:5000/api/add-book', {
+      const response = await fetch(`${env.backendURL}/add-book`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
