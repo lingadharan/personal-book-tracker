@@ -1,3 +1,3 @@
 export const env = {
-  backendURL: process.env.NEXT_PUBLIC_FE_BASE_URL!,
+  backendURL: process.env.NEXT_PUBLIC_BE_BASE_URL!,
 };

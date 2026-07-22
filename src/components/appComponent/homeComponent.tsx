@@ -46,7 +46,7 @@ export default function HomeComponent() {
     const getBookDetails = async () => {
       try {
         if (selectedTag !== 'dashboard') return;
-        const response = await fetch(`${env.backendURL}`, {
+        const response = await fetch(`${env.backendURL}/get-book`, {
           credentials: 'include',
         });
         const result = await response.json();
