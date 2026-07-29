@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Personal Book Tracker
 
-## Getting Started
+A full-stack web application that allows users to organize, track, and manage their personal reading lists, reading progress, and book notes.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 📖 **Track Reading Progress:** Organize books by status (e.g., *Want to Read*, *Currently Reading*, *Completed*).
+- ⭐ **Reviews:** Add notes and reviews for completed books.
+- 🔐 **User Authentication:** Secure user sign-up, login, and session management using JWT / OAuth 2.0.
+- 📱 **Responsive Design:** Mobile-first layout providing a seamless experience across desktop, tablet, and mobile devices.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+**Frontend:**
+- **Framework:** React / Next.js
+- **Language:** TypeScript / JavaScript
+- **Styling:** CSS3 / Tailwind CSS
 
-To learn more about Next.js, take a look at the following resources:
+**Backend:**
+- **Environment:** Node.js
+- **Framework:** Express.js
+- **Database:** MongoDB (Mongoose ODM)
+- **Authentication:** JSON Web Tokens (JWT) / OAuth 2.0
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Getting Started
 
-## Deploy on Vercel
+Follow these instructions to get a local copy up and running on your machine.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Prerequisites
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Node.js](https://nodejs.org/) (v16.x or higher)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [MongoDB](https://www.mongodb.com/) (Local instance or MongoDB Atlas URI)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/lingadharan/personal-book-tracker.git
+   cd personal-book-tracker
+   ```
+2. **Install dependencies & Run the Application:**
+   ```bash
+   npm install
+   npm run dev
