@@ -153,7 +153,7 @@ export const logoutUser = (req: Request, res: Response): void => {
   res.clearCookie('token', {
     httpOnly: true,
     secure: true,
-    sameSite: 'lax',
+    sameSite: 'none',
   });
 
   res.status(200).json({
