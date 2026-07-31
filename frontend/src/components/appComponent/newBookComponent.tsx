@@ -4,6 +4,7 @@ import { useBookContext } from '@/context/bookContext';
 import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent } from 'react';
+import { toast } from 'sonner';
 
 export interface IBook {
   title: string;
@@ -95,6 +96,7 @@ export default function NewBookComponent() {
       }
 
       setNewBookDetails(initialNewBookDetails);
+      toast.success('Book added successfully!');
       setSelectedTag('dashboard');
       router.push('/');
     } catch (error) {

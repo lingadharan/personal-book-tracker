@@ -5,6 +5,7 @@ import { Book } from '@/types/interfaces';
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
+import { toast } from 'sonner';
 
 function UpdateBookComponent() {
   const { setSelectedTag, allBookDetails } = useBookContext();
@@ -101,6 +102,7 @@ function UpdateBookComponent() {
       }
 
       setNewBookDetails(initialNewBookDetails);
+      toast.success('Book updated successfully!');
       setSelectedTag('dashboard');
       router.push('/');
     } catch (error) {

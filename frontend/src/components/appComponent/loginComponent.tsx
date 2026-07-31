@@ -1,21 +1,52 @@
 'use client';
 import { env } from '@/utiles/env';
-import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { Suspense, useEffect } from 'react';
 
 function LoginContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const error = searchParams.get('error');
 
   const handleGoogleLogin = () => {
     window.location.href = `${env.backendURL}/auth/google`;
   };
 
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      console.log('Executed!');
+      try {
+        const response = await fetch(`${env.backendURL}/auth/me`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        const data = await response.json();
+
+        if (data.isAuthenticated) {
+          router.push('/');
+        }
+      } catch (error) {
+        console.error('Auth verification failed on Login page:', error);
+      }
+    };
+
+    checkAuthentication();
+  }, [router]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">
       <div className="w-full max-w-md rounded-2xl border border-amber-200 bg-white p-6 shadow-lg sm:p-8">
-        <div className="mb-8 text-center">
-          <div className="mb-4 text-5xl">📚</div>
+        <div className=" mb-8 flex flex-col items-center text-center">
+          <Image
+            src="/personal-book-tracker.svg"
+            alt="personal book tracker Logo"
+            className="mb-4"
+            width={100}
+            height={100}
+            priority
+          />
 
           <h1 className="text-3xl font-bold text-amber-900">Welcome Back</h1>
 
