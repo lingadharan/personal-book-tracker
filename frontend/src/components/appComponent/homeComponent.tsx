@@ -3,45 +3,21 @@ import MainContent from '@/components/contents/mainContent';
 import Header from '@/components/header';
 import Tags from '@/components/tags';
 import { useBookContext } from '@/context/bookContext';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
+import { useAuth } from '@/context/authContext';
 
 export default function HomeComponent() {
   const context = useBookContext();
   const { selectedTag, setSelectedTag, setAllBookDetails } = context;
   const router = useRouter();
+  const { isAuthenticated, user } = useAuth();
 
-  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        const response = await fetch(`${env.backendURL}/auth/me`, {
-          method: 'GET',
-          credentials: 'include',
-        });
-
-        const data = await response.json();
-
-        if (data.isAuthenticated) {
-          setCurrentUser(data.user);
-          setIsCheckingAuth(false);
-        } else {
-          router.push('/login');
-        }
-      } catch (error) {
-        console.error('Auth verification failed:', error);
-        router.push('/login');
-      }
-    };
-
-    checkAuthentication();
-  }, [router]);
+  console.log('ISAUTH: ', isAuthenticated);
 
   useEffect(() => {
-    if (isCheckingAuth) return;
+    if (!isAuthenticated) return;
 
     const getBookDetails = async () => {
       try {
@@ -58,20 +34,16 @@ export default function HomeComponent() {
       }
     };
     getBookDetails();
-  }, [selectedTag, setAllBookDetails, isCheckingAuth]);
+  }, [selectedTag, setAllBookDetails]);
 
-  if (isCheckingAuth) {
-    return (
-      <div className="min-h-screen bg-amber-100 flex flex-col items-center justify-center font-medium text-amber-900">
-        Checking secure session...
-      </div>
-    );
+  if (!isAuthenticated) {
+    router.replace('/login');
   }
 
   return (
     <div className="min-h-full flex flex-col bg-amber-100">
       <header>
-        <Header user={currentUser} />
+        <Header user={user} />
       </header>
       <Tags setSelectedTag={setSelectedTag} selectedTag={selectedTag} />
       <MainContent selectedTag={selectedTag} />
