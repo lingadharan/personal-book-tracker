@@ -1,3 +1,4 @@
+'use client';
 import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -12,6 +13,7 @@ import {
 } from '@/utiles/constants';
 
 import handleDeleteButton from '@/utiles/deleteBookDetails';
+import { toast } from 'sonner';
 
 type TableConfig = {
   headers: string[];
@@ -92,15 +94,17 @@ export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
               >
                 <td className="px-4 py-3 text-center">{index + 1}</td>
 
-                <td className="px-4 py-3">{book.title}</td>
+                <td className="px-4 py-3 text-center">{book.title}</td>
 
-                <td className="px-4 py-3">{book.author}</td>
+                <td className="px-4 py-3 text-center">{book.author}</td>
 
-                <td className="px-4 py-3">{config.extraColumn(book)}</td>
+                <td className="px-4 py-3 text-center">
+                  {config.extraColumn(book)}
+                </td>
 
                 <td className="px-4 py-3">{book.notes ?? ''}</td>
 
-                <td className="px-4 py-3">
+                <td className="px-4 py-3 text-center">
                   <div className="flex flex-wrap justify-center gap-2">
                     <button
                       onClick={() =>
@@ -115,6 +119,9 @@ export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
                       onClick={async () => {
                         await handleDeleteButton(book._id);
                         context.setSelectedTag('dashboard');
+                        toast.error(
+                          `Book ${book.title} was deleted successfully!`
+                        );
                       }}
                       className="rounded-md bg-red-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-red-600"
                     >

@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { GlobalBookContextProvider } from '@/context/bookContext';
+import { Geist } from 'next/font/google';
+import { cn } from '@/lib/utils';
+import { Toaster } from 'sonner';
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: {
@@ -46,9 +51,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={cn('font-sans', geist.variable)}>
       <body>
         <GlobalBookContextProvider>{children}</GlobalBookContextProvider>
+        <Toaster position="top-right" richColors duration={3000} />
       </body>
     </html>
   );

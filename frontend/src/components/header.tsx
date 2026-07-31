@@ -41,10 +41,10 @@ export default function Header({ user }: HeaderProps) {
     <div className="flex flex-col gap-4 bg-amber-50 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
         <Image
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={100}
-          height={20}
+          src="/personal-book-tracker.svg"
+          alt="personal book tracker Logo"
+          width={50}
+          height={50}
           priority
         />
 

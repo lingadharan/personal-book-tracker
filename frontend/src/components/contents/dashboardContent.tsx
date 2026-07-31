@@ -25,8 +25,7 @@ export default function DashBoardContent() {
   );
 
   return (
-    <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-amber-100 p-4 sm:grid-cols-2 xl:grid-cols-4">
-      {/* Reading */}
+    <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-amber-100 p-4 sm:grid-cols-2 xl:grid-cols-2">
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
         <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
           Reading
@@ -41,7 +40,6 @@ export default function DashBoardContent() {
         </ol>
       </div>
 
-      {/* Read */}
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
         <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
           Read
@@ -56,7 +54,6 @@ export default function DashBoardContent() {
         </ol>
       </div>
 
-      {/* Interesting */}
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
         <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
           Interesting Books
@@ -71,7 +68,6 @@ export default function DashBoardContent() {
         </ol>
       </div>
 
-      {/* Favourite */}
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
         <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
           Favourite Books
