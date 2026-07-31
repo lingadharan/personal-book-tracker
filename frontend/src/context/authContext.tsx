@@ -40,8 +40,8 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
         setUser(data.user);
       }
     }
-    catch () {
-      console.error("Error on Auth!")
+    catch (error: unknown) {
+      console.error("Error on Auth: ", error)
     }
   }
 
