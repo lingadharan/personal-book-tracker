@@ -2,10 +2,12 @@
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
+import { useAuth } from '@/context/authContext';
 
 function LoginContent() {
   const searchParams = useSearchParams();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const error = searchParams.get('error');
 
@@ -13,27 +15,9 @@ function LoginContent() {
     window.location.href = `${env.backendURL}/auth/google`;
   };
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      console.log('Executed!');
-      try {
-        const response = await fetch(`${env.backendURL}/auth/me`, {
-          method: 'GET',
-          credentials: 'include',
-        });
-
-        const data = await response.json();
-
-        if (data.isAuthenticated) {
-          router.push('/');
-        }
-      } catch (error) {
-        console.error('Auth verification failed on Login page:', error);
-      }
-    };
-
-    checkAuthentication();
-  }, [router]);
+  if (isAuthenticated) {
+    router.replace('/');
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">

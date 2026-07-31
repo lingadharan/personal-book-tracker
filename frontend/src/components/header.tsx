@@ -4,16 +4,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
-
-interface User {
-  name: string;
-  email: string;
-  avatar?: string;
-  provider: string;
-}
+import { IUser } from '@/context/authContext';
 
 interface HeaderProps {
-  user: User | null;
+  user: IUser | null;
 }
 
 export default function Header({ user }: HeaderProps) {
@@ -27,7 +21,7 @@ export default function Header({ user }: HeaderProps) {
         credentials: 'include',
       });
       if (response.ok) {
-        router.push('/login');
+        router.replace('/login');
         window.location.reload();
       } else {
         console.error('Logout failed on the server');
@@ -70,7 +64,7 @@ export default function Header({ user }: HeaderProps) {
               {user.avatar ? (
                 <Image
                   src={user.avatar}
-                  alt={user.name}
+                  alt={user.name || ''}
                   width={40}
                   height={40}
                   className="h-9 w-9 rounded-full object-cover sm:h-10 sm:w-10"
@@ -78,7 +72,7 @@ export default function Header({ user }: HeaderProps) {
                 />
               ) : (
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white sm:h-10 sm:w-10">
-                  {user.name.charAt(0).toUpperCase()}
+                  {user.name ? user.name.charAt(0).toUpperCase() : 'XY'}
                 </div>
               )}
             </button>
@@ -89,7 +83,7 @@ export default function Header({ user }: HeaderProps) {
                   {user.avatar && (
                     <Image
                       src={user.avatar}
-                      alt={user.name}
+                      alt={user.name || ''}
                       width={56}
                       height={56}
                       className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
