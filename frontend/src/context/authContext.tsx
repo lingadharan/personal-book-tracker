@@ -1,33 +1,41 @@
-'use client'
+'use client';
 
-import { env } from "@/utiles/env";
-import { createContext, useContext, useEffect, useState } from "react";
+import { env } from '@/utiles/env';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export interface IUser {
-  _id: string,
-  email: string,
-  name?: string,
-  avatar?: string,
-  provider: string,
+  _id: string;
+  email: string;
+  name?: string;
+  avatar?: string;
+  provider: string;
   // providerId: string;
 }
 
 export interface IAuthContext {
-  user: IUser | null,
-  isAuthenticated: boolean,
-  refreshAuth: () => Promise<void>
+  user: IUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  refreshAuth: () => Promise<void>;
 }
 
 export interface IAuthResponse {
-  isAuthenticated: boolean,
-  user: IUser
+  isAuthenticated: boolean;
+  user: IUser;
 }
 
 const authContext = createContext<undefined | IAuthContext>(undefined);
 
-export function AuthContextProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<null | IUser>(null)
-  const isAuthenticated = !(user === null)
+export function AuthContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [user, setUser] = useState<null | IUser>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isAuthenticated = !(user === null);
+  const [isRefreshAuthCalled, setIsRefreshAuthCalled] =
+    useState<boolean>(false);
 
   const refreshAuth = async () => {
     try {
@@ -35,34 +43,43 @@ export function AuthContextProvider({ children }: { children: React.ReactNode })
         method: 'GET',
         credentials: 'include',
       });
-      const data = await response.json() as IAuthResponse;
+      const data = (await response.json()) as IAuthResponse;
       if (data.isAuthenticated) {
         setUser(data.user);
       }
+    } catch (error: unknown) {
+      console.error('Error on Auth: ', error);
+    } finally {
+      setIsLoading(false);
+      setIsRefreshAuthCalled(true);
     }
-    catch (error: unknown) {
-      console.error("Error on Auth: ", error)
-    }
-  }
+  };
 
   useEffect(() => {
-    refreshAuth();
+    if (!isRefreshAuthCalled) {
+      refreshAuth();
+    }
   }, []);
 
   return (
     <authContext.Provider
-      value={{ user: user, isAuthenticated: isAuthenticated, refreshAuth: refreshAuth }}
+      value={{
+        user: user,
+        isAuthenticated: isAuthenticated,
+        isLoading: isLoading,
+        refreshAuth: refreshAuth,
+      }}
     >
       {children}
     </authContext.Provider>
-  )
+  );
 }
 
 export function useAuth(): IAuthContext {
   const context = useContext(authContext);
 
   if (!context) {
-    throw new Error("AuthContext must be used within provider!")
+    throw new Error('AuthContext must be used within provider!');
   }
-  return context
+  return context;
 }

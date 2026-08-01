@@ -1,9 +1,10 @@
 'use client';
 
+import { useAuth } from '@/context/authContext';
 import { useBookContext } from '@/context/bookContext';
 import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
-import React, { useState, ChangeEvent } from 'react';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export interface IBook {
@@ -19,6 +20,7 @@ export interface IBook {
 
 export default function NewBookComponent() {
   const { setSelectedTag } = useBookContext();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const initialNewBookDetails: IBook = {
@@ -108,6 +110,16 @@ export default function NewBookComponent() {
     setNewBookDetails(initialNewBookDetails);
     router.push('/');
   };
+
+  useEffect(() => {
+    if (!user || !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [user, isAuthenticated]);
+
+  if (isLoading) {
+    return <p>Loading... New Book Page!!!</p>;
+  }
 
   return (
     <div className="min-h-screen bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">

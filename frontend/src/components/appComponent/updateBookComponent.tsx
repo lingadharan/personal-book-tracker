@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/context/authContext';
 import { useBookContext } from '@/context/bookContext';
 import { Book } from '@/types/interfaces';
 import { env } from '@/utiles/env';
@@ -9,6 +10,7 @@ import { toast } from 'sonner';
 
 function UpdateBookComponent() {
   const { setSelectedTag, allBookDetails } = useBookContext();
+  const { user, isLoading, isAuthenticated } = useAuth();
   const initialNewBookDetails: Book = {
     _id: '',
     title: '',
@@ -20,12 +22,14 @@ function UpdateBookComponent() {
     notes: '',
     category: 'reading',
   };
+  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const searchParams = useSearchParams();
   const _id = searchParams.get('_id');
   const router = useRouter();
   const [updateBookDetails, setNewBookDetails] = useState<Book>(
     initialNewBookDetails
   );
+
   useEffect(() => {
     if (!_id) return;
     const getBookById = async () => {
@@ -37,11 +41,19 @@ function UpdateBookComponent() {
     getBookById();
   }, [_id]);
 
+  useEffect(() => {
+    if (!user || !isAuthenticated) {
+      router.replace('/');
+    }
+  }, [user, isAuthenticated]);
+
   if (!_id) {
     return <p>Something went wrong on Update book page. Id not valid</p>;
   }
 
-  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
+  if (isLoading) {
+    return <p>Loading... Update Book!!!</p>;
+  }
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
