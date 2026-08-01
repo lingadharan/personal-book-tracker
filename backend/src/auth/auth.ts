@@ -6,6 +6,9 @@ import User from '../models/user.js';
 export const redirectToGoogle = (req: Request, res: Response): void => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
 
+  const frontendUrl =
+    (req.query.redirect_to as string) || process.env.FRONTEND_URL!;
+
   const options = {
     redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL!,
     client_id: process.env.GOOGLE_CLIENT_ID!,
@@ -16,6 +19,7 @@ export const redirectToGoogle = (req: Request, res: Response): void => {
       'https://www.googleapis.com/auth/userinfo.profile',
       'https://www.googleapis.com/auth/userinfo.email',
     ].join(' '),
+    state: frontendUrl,
   };
 
   const queryString = new URLSearchParams(options).toString();
@@ -27,7 +31,10 @@ export const googleCallback = async (
   req: Request,
   res: Response
 ): Promise<Response | void> => {
-  const { code } = req.query;
+  const { code, state } = req.query;
+
+  const targetFrontendUrl =
+    typeof state === 'string' && state ? state : process.env.FRONTEND_URL!;
 
   if (!code || typeof code !== 'string') {
     return res.status(400).send('Authorization code not provided.');
@@ -94,7 +101,7 @@ export const googleCallback = async (
       maxAge: 1 * 24 * 60 * 60 * 1000,
     });
 
-    return res.redirect(`${process.env.FRONTEND_URL}/`);
+    return res.redirect(`${targetFrontendUrl}/`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error('OAuth Error:', error.response?.data ?? error.message);
@@ -102,7 +109,7 @@ export const googleCallback = async (
       console.error(error);
     }
 
-    return res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
+    return res.redirect(`${targetFrontendUrl}/login?error=auth_failed`);
   }
 };
 
