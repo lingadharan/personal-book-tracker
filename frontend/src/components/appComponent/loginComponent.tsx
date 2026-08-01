@@ -2,12 +2,12 @@
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const router = useRouter();
   const error = searchParams.get('error');
 
@@ -15,9 +15,11 @@ function LoginContent() {
     window.location.href = `${env.backendURL}/auth/google`;
   };
 
-  if (isAuthenticated) {
-    router.replace('/');
-  }
+  useEffect(() => {
+    if (user || isAuthenticated) {
+      router.replace('/');
+    }
+  }, [user, isAuthenticated]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">

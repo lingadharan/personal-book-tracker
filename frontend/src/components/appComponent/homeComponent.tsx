@@ -12,9 +12,7 @@ export default function HomeComponent() {
   const context = useBookContext();
   const { selectedTag, setSelectedTag, setAllBookDetails } = context;
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
-
-  console.log('ISAUTH: ', isAuthenticated);
+  const { isAuthenticated, user, isLoading } = useAuth();
 
   useEffect(() => {
     if (!isAuthenticated) return;
@@ -36,8 +34,14 @@ export default function HomeComponent() {
     getBookDetails();
   }, [selectedTag, setAllBookDetails]);
 
-  if (!isAuthenticated) {
-    router.replace('/login');
+  useEffect(() => {
+    if (!user || !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isLoading, user, isAuthenticated]);
+
+  if (isLoading) {
+    return <p>Loading... Dashboard!!!</p>;
   }
 
   return (
