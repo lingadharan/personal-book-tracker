@@ -15,7 +15,7 @@ export default function HomeComponent() {
   const { isAuthenticated, user, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (isLoading || !isAuthenticated) return;
 
     const getBookDetails = async () => {
       try {
@@ -32,13 +32,14 @@ export default function HomeComponent() {
       }
     };
     getBookDetails();
-  }, [selectedTag, setAllBookDetails]);
+  }, [selectedTag, setAllBookDetails, isAuthenticated, isLoading]);
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user || !isAuthenticated) {
       router.replace('/login');
     }
-  }, [isLoading, user, isAuthenticated]);
+  }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
     return <p>Loading... Dashboard!!!</p>;

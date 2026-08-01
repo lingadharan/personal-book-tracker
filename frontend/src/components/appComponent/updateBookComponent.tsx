@@ -42,17 +42,18 @@ function UpdateBookComponent() {
   }, [_id]);
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user || !isAuthenticated) {
-      router.replace('/');
+      router.replace('/login');
     }
-  }, [user, isAuthenticated]);
-
-  if (!_id) {
-    return <p>Something went wrong on Update book page. Id not valid</p>;
-  }
+  }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
     return <p>Loading... Update Book!!!</p>;
+  }
+
+  if (!_id) {
+    return <p>Something went wrong on Update book page. Id not valid</p>;
   }
 
   const handleInputChange = (

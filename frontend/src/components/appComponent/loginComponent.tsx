@@ -7,7 +7,7 @@ import { useAuth } from '@/context/authContext';
 
 function LoginContent() {
   const searchParams = useSearchParams();
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const error = searchParams.get('error');
 
@@ -16,10 +16,19 @@ function LoginContent() {
   };
 
   useEffect(() => {
+    if (isLoading) return;
     if (user || isAuthenticated) {
       router.replace('/');
     }
-  }, [user, isAuthenticated]);
+  }, [isLoading, user, isAuthenticated, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-amber-100">
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">

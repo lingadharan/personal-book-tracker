@@ -112,10 +112,11 @@ export default function NewBookComponent() {
   };
 
   useEffect(() => {
+    if (isLoading) return;
     if (!user || !isAuthenticated) {
       router.replace('/login');
     }
-  }, [user, isAuthenticated]);
+  }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
     return <p>Loading... New Book Page!!!</p>;

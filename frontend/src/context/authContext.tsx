@@ -44,11 +44,14 @@ export function AuthContextProvider({
         credentials: 'include',
       });
       const data = (await response.json()) as IAuthResponse;
-      if (data.isAuthenticated) {
+      if (data.isAuthenticated && data.user) {
         setUser(data.user);
+      } else {
+        setUser(null);
       }
     } catch (error: unknown) {
       console.error('Error on Auth: ', error);
+      setUser(null);
     } finally {
       setIsLoading(false);
       setIsRefreshAuthCalled(true);
