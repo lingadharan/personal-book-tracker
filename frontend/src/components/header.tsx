@@ -7,12 +7,16 @@ import { env } from '@/utiles/env';
 import { IUser } from '@/context/authContext';
 
 interface HeaderProps {
-  user: IUser | null;
+  user?: IUser | null;
 }
 
 export default function Header({ user }: HeaderProps) {
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${env.backendURL}/auth/google`;
+  };
 
   const handleLogout = async () => {
     try {
@@ -48,72 +52,74 @@ export default function Header({ user }: HeaderProps) {
       </div>
 
       <div className="flex w-full items-center justify-center gap-3 sm:w-auto sm:justify-end sm:gap-4">
-        <Link
-          href="/new-book"
-          className="text-sm font-medium text-amber-800 transition-colors hover:text-amber-950 sm:text-base"
-        >
-          New Book
-        </Link>
-
         {user ? (
-          <div className="relative">
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="flex items-center gap-2 rounded-full border border-amber-300 p-1.5 transition-all hover:bg-amber-200 focus:outline-none"
+          <>
+            <Link
+              href="/new-book"
+              className="text-sm font-mezdium text-amber-800 transition-colors hover:text-amber-950 sm:text-base"
             >
-              {user.avatar ? (
-                <Image
-                  src={user.avatar}
-                  alt={user.name || ''}
-                  width={40}
-                  height={40}
-                  className="h-9 w-9 rounded-full object-cover sm:h-10 sm:w-10"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white sm:h-10 sm:w-10">
-                  {user.name ? user.name.charAt(0).toUpperCase() : 'XY'}
-                </div>
-              )}
-            </button>
+              New Book
+            </Link>
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-2 rounded-full border border-amber-300 p-1.5 transition-all hover:bg-amber-200 focus:outline-none"
+              >
+                {user.avatar ? (
+                  <Image
+                    src={user.avatar}
+                    alt={user.name || ''}
+                    width={40}
+                    height={40}
+                    className="h-9 w-9 rounded-full object-cover sm:h-10 sm:w-10"
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white sm:h-10 sm:w-10">
+                    {user.name ? user.name.charAt(0).toUpperCase() : 'XY'}
+                  </div>
+                )}
+              </button>
 
-            {showDropdown && (
-              <div className="absolute right-0 z-50 mt-2 w-56 rounded-xl border border-slate-100 bg-white p-4 shadow-lg sm:w-64">
-                <div className="flex flex-col items-center text-center">
-                  {user.avatar && (
-                    <Image
-                      src={user.avatar}
-                      alt={user.name || ''}
-                      width={56}
-                      height={56}
-                      className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  )}
+              {showDropdown && (
+                <div className="absolute right-0 z-50 mt-2 w-56 rounded-xl border border-slate-100 bg-white p-4 shadow-lg sm:w-64">
+                  <div className="flex flex-col items-center text-center">
+                    {user.avatar && (
+                      <Image
+                        src={user.avatar}
+                        alt={user.name || ''}
+                        width={56}
+                        height={56}
+                        className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
 
-                  <h3 className="text-base font-bold text-slate-800">
-                    {user.name}
-                  </h3>
+                    <h3 className="text-base font-bold text-slate-800">
+                      {user.name}
+                    </h3>
 
-                  <p className="mb-2 break-all text-xs text-slate-500">
-                    {user.email}
-                  </p>
+                    <p className="mb-2 break-all text-xs text-slate-500">
+                      {user.email}
+                    </p>
 
-                  <div className="my-2 w-full border-t border-slate-100 pt-3">
-                    <button
-                      onClick={handleLogout}
-                      className="w-full rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 transition-colors duration-150 hover:bg-red-100"
-                    >
-                      Log Out
-                    </button>
+                    <div className="my-2 w-full border-t border-slate-100 pt-3">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 transition-colors duration-150 hover:bg-red-100"
+                      >
+                        Log Out
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          </>
         ) : (
           <Link
             href="/login"
+            onClick={handleGoogleLogin}
             className="rounded border border-amber-300 bg-amber-200 px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-amber-300 sm:text-base"
           >
             Sign In
