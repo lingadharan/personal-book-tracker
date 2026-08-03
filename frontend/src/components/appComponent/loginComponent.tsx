@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
+import Header from '../header';
 
 function LoginContent() {
   const searchParams = useSearchParams();
@@ -115,6 +116,7 @@ export default function LoginComponent() {
         </div>
       }
     >
+      <Header />
       <LoginContent />
     </Suspense>
   );

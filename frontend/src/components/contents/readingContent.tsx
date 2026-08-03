@@ -8,7 +8,7 @@ export default function ReadingContent({
 }) {
   return (
     <div>
-      <Table selectedTag={selectedTag} />
+      <Table />
     </div>
   );
 }

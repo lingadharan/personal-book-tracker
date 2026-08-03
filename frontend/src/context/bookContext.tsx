@@ -17,7 +17,7 @@ export function GlobalBookContextProvider({
   children: ReactNode;
 }) {
   const [allBookDetails, setAllBookDetails] = useState<Book[]>([]);
-  const [selectedTag, setSelectedTag] = useState<SelectedTag>('dashboard');
+  const [selectedTag, setSelectedTag] = useState<SelectedTag>('Overview');
   return (
     <GlobalBookContext.Provider
       value={{

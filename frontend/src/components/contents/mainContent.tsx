@@ -13,15 +13,15 @@ export default function MainContent({
 }) {
   const selectedContent = (): JSX.Element => {
     switch (selectedTag) {
-      case 'dashboard':
+      case 'Overview':
         return <DashBoardContent />;
-      case 'reading':
+      case 'Currently Reading':
         return <ReadingContent selectedTag={selectedTag} />;
-      case 'read':
+      case 'Completed Books':
         return <ReadContent selectedTag={selectedTag} />;
-      case 'interest':
+      case 'Wishlist':
         return <InterestBookContent selectedTag={selectedTag} />;
-      case 'favourite':
+      case 'Favorite Books':
         return <FavouriteBookContent selectedTag={selectedTag} />;
       default:
         return <></>;

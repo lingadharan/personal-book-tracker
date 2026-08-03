@@ -1,26 +1,18 @@
-import { GlobalBookContext } from '@/context/bookContext';
-import { useContext } from 'react';
+import { useBookContext } from '@/context/bookContext';
 
 export default function DashBoardContent() {
-  const context = useContext(GlobalBookContext);
-  if (!context) {
-    return (
-      <p>
-        Error: GlobalBookContext must be used within a GlobalBookContextProvider
-      </p>
-    );
-  }
+  const { allBookDetails } = useBookContext();
 
-  const readBooksName = context.allBookDetails.filter(
+  const readBooksName = allBookDetails.filter(
     (book) => book.category === 'read'
   );
-  const readingBooksName = context.allBookDetails.filter(
+  const readingBooksName = allBookDetails.filter(
     (book) => book.category === 'reading'
   );
-  const interestBookName = context.allBookDetails.filter(
+  const interestBookName = allBookDetails.filter(
     (book) => book.category === 'interest'
   );
-  const favouriteBookName = context.allBookDetails.filter(
+  const favouriteBookName = allBookDetails.filter(
     (book) => book.category === 'favourite'
   );
 
