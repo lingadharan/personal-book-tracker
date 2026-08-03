@@ -42,9 +42,22 @@ export default function NewBookComponent() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    if (name !== 'currentPage') {
+      setNewBookDetails((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
+    }
+
+    const currentPage = Number(value);
+
+    if (Number.isNaN(currentPage)) return;
+
     setNewBookDetails((prev) => ({
       ...prev,
-      [name]: name === 'currentPage' ? Number(value) : value,
+      currentPage: Math.max(0, currentPage),
     }));
   };
 
@@ -132,7 +145,6 @@ export default function NewBookComponent() {
           Add New Book
         </h2>
 
-        {/* Book Name */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Book Name <span className="text-red-500">*</span>
@@ -142,6 +154,7 @@ export default function NewBookComponent() {
             type="text"
             name="title"
             required
+            minLength={3}
             value={newBookDetails.title}
             onChange={handleInputChange}
             placeholder="Enter book name..."
@@ -149,7 +162,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Author */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Author <span className="text-red-500">*</span>
@@ -159,6 +171,7 @@ export default function NewBookComponent() {
             type="text"
             name="author"
             required
+            minLength={3}
             value={newBookDetails.author}
             onChange={handleInputChange}
             placeholder="Enter author..."
@@ -166,7 +179,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Category */}
         <div className="mb-6">
           <label className="mb-4 block font-semibold text-amber-900">
             Category <span className="text-red-500">*</span>
@@ -198,14 +210,13 @@ export default function NewBookComponent() {
           </div>
         </div>
 
-        {/* Current Page */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Page No
           </label>
 
           <input
-            type="number"
+            type="text"
             name="currentPage"
             value={newBookDetails.currentPage}
             onChange={handleInputChange}
@@ -213,7 +224,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Read */}
         {newBookDetails.category === 'read' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -231,7 +241,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Interest */}
         {newBookDetails.category === 'interest' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -241,6 +250,7 @@ export default function NewBookComponent() {
             <input
               type="text"
               name="suggestedBy"
+              minLength={3}
               value={newBookDetails.suggestedBy}
               onChange={handleInputChange}
               className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
@@ -248,7 +258,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Favourite */}
         {newBookDetails.category === 'favourite' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -270,7 +279,6 @@ export default function NewBookComponent() {
           </div>
         )}
 
-        {/* Notes */}
         <div className="mb-8">
           <label className="mb-2 block font-semibold text-amber-900">
             Notes
@@ -286,7 +294,6 @@ export default function NewBookComponent() {
           />
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
           <button
             type="button"

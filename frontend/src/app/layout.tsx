@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   authors: [
     { name: 'Lingadharan Jayakumar', url: 'https://github.com/lingadharan' },
   ],
-  metadataBase: new URL('http://localhost:3000/'),
+  metadataBase: new URL('https://personal-book-tracker-henna.vercel.app/'),
 };
 
 export default function RootLayout({

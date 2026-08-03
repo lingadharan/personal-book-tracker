@@ -60,9 +60,22 @@ function UpdateBookComponent() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    if (name !== 'currentPage') {
+      setNewBookDetails((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+      return;
+    }
+
+    const currentPage = Number(value);
+
+    if (Number.isNaN(currentPage)) return;
+
     setNewBookDetails((prev) => ({
       ...prev,
-      [name]: value,
+      currentPage: Math.max(0, currentPage),
     }));
   };
 
@@ -138,7 +151,6 @@ function UpdateBookComponent() {
           Update Book
         </h2>
 
-        {/* Book Name */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Book Name <span className="text-red-500">*</span>
@@ -148,6 +160,7 @@ function UpdateBookComponent() {
             type="text"
             name="title"
             required
+            minLength={3}
             value={updateBookDetails.title}
             onChange={handleInputChange}
             placeholder="Enter book name..."
@@ -155,7 +168,6 @@ function UpdateBookComponent() {
           />
         </div>
 
-        {/* Author */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Author <span className="text-red-500">*</span>
@@ -165,6 +177,7 @@ function UpdateBookComponent() {
             type="text"
             name="author"
             required
+            minLength={3}
             value={updateBookDetails.author}
             onChange={handleInputChange}
             placeholder="Enter author..."
@@ -172,7 +185,6 @@ function UpdateBookComponent() {
           />
         </div>
 
-        {/* Category */}
         <div className="mb-6">
           <label className="mb-4 block font-semibold text-amber-900">
             Category <span className="text-red-500">*</span>
@@ -204,14 +216,13 @@ function UpdateBookComponent() {
           </div>
         </div>
 
-        {/* Page No */}
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-amber-900">
             Page No
           </label>
 
           <input
-            type="number"
+            type="text"
             name="currentPage"
             value={updateBookDetails.currentPage}
             onChange={handleInputChange}
@@ -219,7 +230,6 @@ function UpdateBookComponent() {
           />
         </div>
 
-        {/* Read */}
         {updateBookDetails.category === 'read' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -237,7 +247,6 @@ function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Interest */}
         {updateBookDetails.category === 'interest' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -247,6 +256,7 @@ function UpdateBookComponent() {
             <input
               type="text"
               name="suggestedBy"
+              minLength={3}
               value={updateBookDetails.suggestedBy}
               onChange={handleInputChange}
               className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
@@ -254,7 +264,6 @@ function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Favourite */}
         {updateBookDetails.category === 'favourite' && (
           <div className="mb-6">
             <label className="mb-2 block font-semibold text-amber-900">
@@ -276,7 +285,6 @@ function UpdateBookComponent() {
           </div>
         )}
 
-        {/* Notes */}
         <div className="mb-8">
           <label className="mb-2 block font-semibold text-amber-900">
             Notes
@@ -292,7 +300,6 @@ function UpdateBookComponent() {
           />
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-col-reverse gap-4 sm:flex-row sm:justify-end">
           <button
             type="button"
