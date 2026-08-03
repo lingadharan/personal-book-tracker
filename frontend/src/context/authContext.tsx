@@ -34,8 +34,6 @@ export function AuthContextProvider({
   const [user, setUser] = useState<null | IUser>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isAuthenticated = !(user === null);
-  const [isRefreshAuthCalled, setIsRefreshAuthCalled] =
-    useState<boolean>(false);
 
   const refreshAuth = async () => {
     try {
@@ -54,14 +52,11 @@ export function AuthContextProvider({
       setUser(null);
     } finally {
       setIsLoading(false);
-      setIsRefreshAuthCalled(true);
     }
   };
 
   useEffect(() => {
-    if (!isRefreshAuthCalled) {
-      refreshAuth();
-    }
+    void refreshAuth();
   }, []);
 
   return (
