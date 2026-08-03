@@ -19,7 +19,7 @@ export default function HomeComponent() {
 
     const getBookDetails = async () => {
       try {
-        if (selectedTag !== 'dashboard') return;
+        if (selectedTag.toLocaleLowerCase() !== 'overview') return;
         const response = await fetch(`${env.backendURL}/get-book`, {
           credentials: 'include',
         });

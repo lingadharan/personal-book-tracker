@@ -1,10 +1,18 @@
+// export const TAG_CONSTANTS = [
+//   'dashboard',
+//   'reading',
+//   'read',
+//   'interest',
+//   'favourite',
+// ] as const;
+
 export const TAG_CONSTANTS = [
-  'dashboard',
-  'reading',
-  'read',
-  'interest',
-  'favourite',
-] as const;
+  'Overview',
+  'Currently Reading',
+  'Completed Books',
+  'Wishlist',
+  'Favorite Books',
+];
 
 export const READING_CONTENT_HEAD = [
   'No',

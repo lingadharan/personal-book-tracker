@@ -129,7 +129,7 @@ function UpdateBookComponent() {
 
       setNewBookDetails(initialNewBookDetails);
       toast.success('Book updated successfully!');
-      setSelectedTag('dashboard');
+      setSelectedTag('Overview');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);

@@ -1,8 +1,7 @@
 'use client';
-import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { GlobalBookContext } from '@/context/bookContext';
+import { useBookContext } from '@/context/bookContext';
 import { Book, SelectedTag } from '@/types/interfaces';
 
 import {
@@ -20,45 +19,45 @@ type TableConfig = {
   extraColumn: (book: Book) => string | number;
 };
 
-const TABLE_CONFIG: Record<Exclude<SelectedTag, 'dashboard'>, TableConfig> = {
-  reading: {
+const TABLE_CONFIG: Record<Exclude<SelectedTag, 'Overview'>, TableConfig> = {
+  'Currently Reading': {
     headers: READING_CONTENT_HEAD,
     extraColumn: (book) => book.currentPage ?? 0,
   },
-  read: {
+  'Completed Books': {
     headers: READ_CONTENT_HEAD,
     extraColumn: (book) => book.durationToComplete ?? 'N/A',
   },
-  interest: {
+  Wishlist: {
     headers: INTEREST_BOOK_CONTENT_HEAD,
     extraColumn: (book) => book.suggestedBy ?? 'Unknown',
   },
-  favourite: {
+  'Favorite Books': {
     headers: FAVOURITE_BOOK_CONTENT_HEAD,
     extraColumn: (book) => book.readStatus ?? 'Plan to Read',
   },
 };
 
-export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
+const CATEGORY_MAP: Record<Exclude<SelectedTag, 'Overview'>, string> = {
+  'Currently Reading': 'reading',
+  'Completed Books': 'read',
+  Wishlist: 'interest',
+  'Favorite Books': 'favourite',
+};
+
+export default function Table() {
   const router = useRouter();
-  const context = useContext(GlobalBookContext);
+  const { allBookDetails, setSelectedTag, selectedTag } = useBookContext();
 
-  if (selectedTag === 'dashboard') return null;
-
-  if (!context) {
-    return (
-      <p>
-        Error: GlobalBookContext must be used within a
-        GlobalBookContextProvider.
-      </p>
-    );
-  }
+  if (selectedTag === 'Overview') return null;
 
   const config = TABLE_CONFIG[selectedTag];
 
-  const books = context.allBookDetails.filter(
-    (book) => book.category === selectedTag
+  const books = allBookDetails.filter(
+    (book) => CATEGORY_MAP[selectedTag] === book.category
   );
+
+  console.log('selectedTag: ', selectedTag);
 
   return (
     <div className="mt-6 overflow-x-auto rounded-xl bg-white shadow">
@@ -118,7 +117,7 @@ export default function Table({ selectedTag }: { selectedTag: SelectedTag }) {
                     <button
                       onClick={async () => {
                         await handleDeleteButton(book._id);
-                        context.setSelectedTag('dashboard');
+                        setSelectedTag('Overview');
                         toast.error(
                           `Book ${book.title} was deleted successfully!`
                         );
