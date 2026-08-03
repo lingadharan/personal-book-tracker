@@ -6,5 +6,5 @@ export default function InterestBookContent({
 }: {
   selectedTag: SelectedTag;
 }) {
-  return <Table selectedTag={selectedTag} />;
+  return <Table />;
 }
