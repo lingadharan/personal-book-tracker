@@ -5,6 +5,10 @@ import type { IBook } from '../models/book.js';
 import { NotFoundError } from '../error/error.js';
 import type ICreateBookDetailsRequest from '../dto/createBookDetailsRequest.dto.js';
 import type { IUpdateBookDetailsDTO } from '../dto/updateBookDetailsRequest.dto.js';
+import type {
+  IFilterBookControllerRequestDTO,
+  IFilterBookRequestDTO,
+} from '../dto/filterBook.dto.js';
 import mongoose from 'mongoose';
 
 function validateBook(book: IBook, isUpdate = false): string | null {
@@ -12,17 +16,6 @@ function validateBook(book: IBook, isUpdate = false): string | null {
     return 'Book data must be an object';
   }
 
-  // if (isUpdate) {
-  //   if (!book._id) {
-  //     return 'Book _id is required for update';
-  //   }
-  // } else {
-  //   if (book._id) {
-  //     return 'Book _id should not be present when creating a book';
-  //   }
-  // }
-
-  // Required fields: Must be present on creation. If present on update, must be non-empty string.
   if (!isUpdate || book.title !== undefined) {
     if (
       !book.title ||
@@ -50,7 +43,6 @@ function validateBook(book: IBook, isUpdate = false): string | null {
     }
   }
 
-  // Optional fields validation
   if (book.currentPage !== undefined && book.currentPage !== null) {
     if (typeof book.currentPage !== 'number') {
       return 'currentPage must be a number';
@@ -235,5 +227,48 @@ export default class BookController {
         message: 'Internal Server Error',
       });
     }
+  }
+
+  async filterBookController(req: Request, res: Response): Promise<Response> {
+    const {
+      page = '1',
+      limit = '10',
+      sort,
+      field,
+      category,
+    } = req.query as IFilterBookControllerRequestDTO;
+
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+
+    if (Number.isNaN(pageNumber) || Number.isNaN(limitNumber)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Page and limit must be valid numbers.',
+      });
+    }
+
+    if (pageNumber < 1 || limitNumber < 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'Page and limit must be greater than 0.',
+      });
+    }
+
+    const serviceRequest: IFilterBookRequestDTO = {
+      page: pageNumber,
+      limit: limitNumber,
+      ...(sort && { sort }),
+      ...(field && { field }),
+      ...(category && { category }),
+    };
+
+    const service = new BookService();
+    const response = await service.filterBookService(serviceRequest);
+
+    return res.status(200).json({
+      success: true,
+      ...response,
+    });
   }
 }

@@ -1,3 +1,7 @@
+import type {
+  IFilterBookRequestDTO,
+  IFilterBookResponseDTO,
+} from '../dto/filterBook.dto.js';
 import type { IUpdateBookDetailsDTO } from '../dto/updateBookDetailsRequest.dto.js';
 import { NotFoundError } from '../error/error.js';
 import type { IBook } from '../models/book.js';
@@ -46,5 +50,54 @@ export default class BookService {
       throw new NotFoundError('Book not found');
     }
     return result;
+  }
+
+  async filterBookService(
+    filters: IFilterBookRequestDTO
+  ): Promise<IFilterBookResponseDTO> {
+    const repository = new BookRepository();
+
+    const {
+      page,
+      limit,
+      sort = 'desc',
+      field = 'createdAt',
+      category,
+    } = filters;
+
+    const queryFilter: Record<string, unknown> = {};
+
+    if (category) {
+      queryFilter.category = category;
+    }
+
+    const skip = (page - 1) * limit;
+
+    const sortOrder: 1 | -1 = sort === 'asc' ? 1 : -1;
+
+    const sortOption: Record<string, 1 | -1> = {
+      [field]: sortOrder,
+    };
+
+    const { data, totalCount } = await repository.filterBookRepository(
+      queryFilter,
+      sortOption,
+      skip,
+      limit
+    );
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    return {
+      data,
+      pagination: {
+        totalCount,
+        page,
+        limit,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+      },
+    };
   }
 }
