@@ -25,7 +25,11 @@ router.put('/update-book', (req: Request, res: Response) =>
 router.delete('/delete-book', (req: Request, res: Response) =>
   bookController.deleteBookDetails(req, res)
 );
+router.get('/books', (req: Request, res: Response) =>
+  bookController.filterBookController(req, res)
+);
 
+// Auth
 router.get('/auth/google', (req: Request, res: Response) =>
   redirectToGoogle(req, res)
 );
