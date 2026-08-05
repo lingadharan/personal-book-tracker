@@ -13,3 +13,23 @@ export interface Book {
 }
 
 export type SelectedTag = (typeof TAG_CONSTANTS)[number];
+
+export interface IBookPagination {
+  totalCount: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasNextPage: boolean;
+  hasPrevPage: boolean;
+}
+
+export interface IBooksApiResponse {
+  success: boolean;
+  data: Book[];
+  pagination: IBookPagination;
+}
+
+export interface IUpdateApiResponse {
+  success: boolean;
+  data: Book;
+}

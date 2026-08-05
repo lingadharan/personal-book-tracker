@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/authContext';
-import { Book } from '@/types/interfaces';
+import { Book, IUpdateApiResponse } from '@/types/interfaces';
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
@@ -29,7 +29,13 @@ function UpdateBookComponent() {
   );
 
   useEffect(() => {
-    // TODO
+    const getBook = async () => {
+      const response = await fetch(`${env.backendURL}/get-book?_id=${_id}`);
+      const data = (await response.json()) as IUpdateApiResponse;
+
+      setNewBookDetails(data.data);
+    };
+    getBook();
   }, [_id]);
 
   useEffect(() => {
@@ -120,8 +126,6 @@ function UpdateBookComponent() {
 
       setNewBookDetails(initialNewBookDetails);
       toast.success('Book updated successfully!');
-      // TODO
-      // setSelectedTag('Overview');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);
