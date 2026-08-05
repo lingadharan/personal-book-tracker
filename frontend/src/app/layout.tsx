@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { GlobalBookContextProvider } from '@/context/bookContext';
 import { Geist } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Toaster } from 'sonner';
 import { AuthContextProvider } from '@/context/authContext';
+import Header from '@/components/header';
+import Tags from '@/components/tags';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -55,7 +56,13 @@ export default function RootLayout({
     <html lang="en" className={cn('font-sans', geist.variable)}>
       <body>
         <AuthContextProvider>
-          <GlobalBookContextProvider>{children}</GlobalBookContextProvider>
+          <div className="min-h-full flex flex-col bg-amber-100">
+            <header>
+              <Header />
+            </header>
+            <Tags />
+            {children}
+          </div>
         </AuthContextProvider>
         <Toaster position="top-right" richColors duration={3000} />
       </body>

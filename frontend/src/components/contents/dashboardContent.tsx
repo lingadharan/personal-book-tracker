@@ -1,20 +1,22 @@
-import { useBookContext } from '@/context/bookContext';
+'use client';
+import { useAuth } from '@/context/authContext';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function DashBoardContent() {
-  const { allBookDetails } = useBookContext();
+  const router = useRouter();
+  const { isAuthenticated, user, isLoading } = useAuth();
 
-  const readBooksName = allBookDetails.filter(
-    (book) => book.category === 'read'
-  );
-  const readingBooksName = allBookDetails.filter(
-    (book) => book.category === 'reading'
-  );
-  const interestBookName = allBookDetails.filter(
-    (book) => book.category === 'interest'
-  );
-  const favouriteBookName = allBookDetails.filter(
-    (book) => book.category === 'favourite'
-  );
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user || !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isLoading, user, isAuthenticated, router]);
+
+  if (isLoading) {
+    return <p>Loading... Dashboard!!!</p>;
+  }
 
   return (
     <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-amber-100 p-4 sm:grid-cols-2 xl:grid-cols-2">
@@ -24,11 +26,11 @@ export default function DashBoardContent() {
         </h3>
 
         <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
-          {readingBooksName.map((book) => (
+          {/* {readingBooksName.map((book) => (
             <li key={book._id} className="text-sm text-gray-700">
               {book.title}
             </li>
-          ))}
+          ))} */}
         </ol>
       </div>
 
@@ -38,11 +40,11 @@ export default function DashBoardContent() {
         </h3>
 
         <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
-          {readBooksName.map((book) => (
+          {/* {readBooksName.map((book) => (
             <li key={book._id} className="text-sm text-gray-700">
               {book.title}
             </li>
-          ))}
+          ))} */}
         </ol>
       </div>
 
@@ -52,11 +54,11 @@ export default function DashBoardContent() {
         </h3>
 
         <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
-          {interestBookName.map((book) => (
+          {/* {interestBookName.map((book) => (
             <li key={book._id} className="text-sm text-gray-700">
               {book.title}
             </li>
-          ))}
+          ))} */}
         </ol>
       </div>
 
@@ -66,11 +68,11 @@ export default function DashBoardContent() {
         </h3>
 
         <ol className="flex-1 list-inside list-decimal space-y-2 overflow-y-auto">
-          {favouriteBookName.map((book) => (
+          {/* {favouriteBookName.map((book) => (
             <li key={book._id} className="text-sm text-gray-700">
               {book.title}
             </li>
-          ))}
+          ))} */}
         </ol>
       </div>
     </div>

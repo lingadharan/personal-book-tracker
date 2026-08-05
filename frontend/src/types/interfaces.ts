@@ -1,10 +1,5 @@
 import { TAG_CONSTANTS } from '@/utiles/constants';
 
-export interface SetSelectedTagInterface {
-  setSelectedTag: (tag: SelectedTag) => void;
-  selectedTag: SelectedTag;
-}
-
 export interface Book {
   _id: string;
   title: string;

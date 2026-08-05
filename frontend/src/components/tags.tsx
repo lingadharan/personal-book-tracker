@@ -1,17 +1,19 @@
-import { SetSelectedTagInterface } from '@/types/interfaces';
-import { TAG_CONSTANTS } from '@/utiles/constants';
+'use client';
 
-export default function Tags({
-  setSelectedTag,
-  selectedTag,
-}: SetSelectedTagInterface) {
+import { TAG_CONSTANTS, TAG_PATHS } from '@/utiles/constants';
+import { usePathname, useRouter } from 'next/navigation';
+
+export default function Tags() {
+  const route = useRouter();
+  const pathName = usePathname();
+  console.log('Path name: ', pathName);
   return (
     <div className="flex flex-wrap justify-center gap-2 pt-6 sm:gap-3 lg:gap-4">
       {TAG_CONSTANTS.map((val, ind) => (
         <button
           key={ind}
           type="button"
-          onClick={() => setSelectedTag(val)}
+          onClick={() => route.push(TAG_PATHS[val])}
           className={`
         rounded-[15px]
         px-3
@@ -27,7 +29,7 @@ export default function Tags({
         lg:text-lg
 
         ${
-          selectedTag === val
+          TAG_PATHS[val] === pathName
             ? 'bg-amber-200 font-semibold text-amber-900'
             : 'bg-gray-100 text-gray-600'
         }

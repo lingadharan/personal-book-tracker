@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth } from '@/context/authContext';
-import { useBookContext } from '@/context/bookContext';
 import { Book } from '@/types/interfaces';
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -9,7 +8,6 @@ import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
 import { toast } from 'sonner';
 
 function UpdateBookComponent() {
-  const { setSelectedTag, allBookDetails } = useBookContext();
   const { user, isLoading, isAuthenticated } = useAuth();
   const initialNewBookDetails: Book = {
     _id: '',
@@ -31,14 +29,7 @@ function UpdateBookComponent() {
   );
 
   useEffect(() => {
-    if (!_id) return;
-    const getBookById = async () => {
-      const updateBookDetails = allBookDetails.find((book) => book._id === _id);
-      if (updateBookDetails) {
-        setNewBookDetails(updateBookDetails);
-      }
-    };
-    getBookById();
+    // TODO
   }, [_id]);
 
   useEffect(() => {
@@ -129,7 +120,8 @@ function UpdateBookComponent() {
 
       setNewBookDetails(initialNewBookDetails);
       toast.success('Book updated successfully!');
-      setSelectedTag('Overview');
+      // TODO
+      // setSelectedTag('Overview');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);
