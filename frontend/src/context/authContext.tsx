@@ -9,7 +9,6 @@ export interface IUser {
   name?: string;
   avatar?: string;
   provider: string;
-  // providerId: string;
 }
 
 export interface IAuthContext {

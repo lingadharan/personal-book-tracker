@@ -1,11 +1,3 @@
-// export const TAG_CONSTANTS = [
-//   'dashboard',
-//   'reading',
-//   'read',
-//   'interest',
-//   'favourite',
-// ] as const;
-
 export const TAG_CONSTANTS = [
   'Overview',
   'Currently Reading',

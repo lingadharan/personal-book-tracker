@@ -110,8 +110,6 @@ export default function NewBookComponent() {
 
       setNewBookDetails(initialNewBookDetails);
       toast.success('Book added successfully!');
-      // TODO
-      // setSelectedTag('Overview');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);

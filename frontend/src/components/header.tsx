@@ -39,17 +39,20 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between bg-amber-50 px-4 py-3 shadow-sm">
-      <div className="flex items-center gap-3">
+      <div
+        className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1 transition-all duration-200 hover:scale-[1.02] hover:bg-amber-50"
+        onClick={() => router.push('/')}
+      >
         <Image
           src="/personal-book-tracker.svg"
           alt="Personal Book Tracker"
           width={45}
           height={45}
           priority
-          className="h-10 w-10 sm:h-11 sm:w-11"
+          className="h-10 w-10 transition-transform duration-200 group-hover:rotate-3 group-hover:scale-105 sm:h-11 sm:w-11"
         />
 
-        <h1 className="hidden text-3xl font-bold text-amber-900 lg:block">
+        <h1 className="hidden text-3xl font-bold text-amber-900 transition-colors duration-200 group-hover:text-amber-700 lg:block">
           Personal Book Tracker
         </h1>
       </div>
