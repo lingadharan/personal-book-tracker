@@ -1,4 +1,4 @@
-import HomeComponent from '@/components/appComponent/homeComponent';
+import DashBoardContent from '@/components/contents/dashboardContent';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -29,7 +29,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
-      <HomeComponent />
+      <DashBoardContent />
     </>
   );
 }

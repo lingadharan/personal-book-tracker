@@ -1,7 +1,6 @@
 'use client';
 
 import { useAuth } from '@/context/authContext';
-import { useBookContext } from '@/context/bookContext';
 import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect } from 'react';
@@ -19,7 +18,6 @@ export interface IBook {
 }
 
 export default function NewBookComponent() {
-  const { setSelectedTag } = useBookContext();
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
   const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
@@ -112,7 +110,8 @@ export default function NewBookComponent() {
 
       setNewBookDetails(initialNewBookDetails);
       toast.success('Book added successfully!');
-      setSelectedTag('Overview');
+      // TODO
+      // setSelectedTag('Overview');
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);

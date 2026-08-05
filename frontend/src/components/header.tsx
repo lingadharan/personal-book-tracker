@@ -4,13 +4,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
-import { IUser } from '@/context/authContext';
+import { useAuth } from '@/context/authContext';
 
-interface HeaderProps {
-  user?: IUser | null;
-}
-
-export default function Header({ user }: HeaderProps) {
+export default function Header() {
+  const { user } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
 
