@@ -1,15 +1,21 @@
 'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
 import { useAuth } from '@/context/authContext';
+import { TAG_CONSTANTS, TAG_PATHS } from '@/utiles/constants';
 
 export default function Header() {
   const { user } = useAuth();
-  const [showDropdown, setShowDropdown] = useState(false);
+
   const router = useRouter();
+  const pathname = usePathname();
+
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleGoogleLogin = () => {
     window.location.href = `${env.backendURL}/auth/google`;
@@ -21,93 +27,183 @@ export default function Header() {
         method: 'POST',
         credentials: 'include',
       });
+
       if (response.ok) {
         router.replace('/login');
         window.location.reload();
-      } else {
-        console.error('Logout failed on the server');
       }
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error(error);
     }
   };
 
   return (
-    <div className="flex flex-col gap-4 bg-amber-50 p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-      <div className="flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
+    <header className="flex items-center justify-between bg-amber-50 px-4 py-3 shadow-sm">
+      <div className="flex items-center gap-3">
         <Image
           src="/personal-book-tracker.svg"
-          alt="personal book tracker Logo"
-          width={50}
-          height={50}
+          alt="Personal Book Tracker"
+          width={45}
+          height={45}
           priority
+          className="h-10 w-10 sm:h-11 sm:w-11"
         />
 
-        <h1 className="text-center text-2xl font-bold text-amber-900 sm:text-left sm:text-3xl lg:text-4xl">
+        <h1 className="hidden text-3xl font-bold text-amber-900 lg:block">
           Personal Book Tracker
         </h1>
       </div>
 
-      <div className="flex w-full items-center justify-center gap-3 sm:w-auto sm:justify-end sm:gap-4">
+      <div className="flex items-center justify-end gap-4">
         {user ? (
           <>
-            <Link
-              href="/new-book"
-              className="text-sm font-mezdium text-amber-800 transition-colors hover:text-amber-950 sm:text-base"
-            >
-              New Book
-            </Link>
             <div className="relative">
               <button
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center gap-2 rounded-full border border-amber-300 p-1.5 transition-all hover:bg-amber-200 focus:outline-none"
+                onClick={() => setShowMenu(!showMenu)}
+                className="rounded-lg p-2 transition hover:bg-amber-100"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 text-amber-800"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <circle cx="5" cy="5" r="1.6" />
+                  <circle cx="12" cy="5" r="1.6" />
+                  <circle cx="19" cy="5" r="1.6" />
+
+                  <circle cx="5" cy="12" r="1.6" />
+                  <circle cx="12" cy="12" r="1.6" />
+                  <circle cx="19" cy="12" r="1.6" />
+
+                  <circle cx="5" cy="19" r="1.6" />
+                  <circle cx="12" cy="19" r="1.6" />
+                  <circle cx="19" cy="19" r="1.6" />
+                </svg>
+              </button>
+
+              {showMenu && (
+                <div
+                  className="
+                    absolute
+                    right-0
+                    top-full
+                    z-50
+                    mt-2
+                    w-60
+                    max-w-[calc(100vw-1rem)]
+                    overflow-hidden
+                    rounded-xl
+                    border
+                    border-slate-200
+                    bg-white
+                    shadow-xl
+                    "
+                >
+                  {TAG_CONSTANTS.map((tag) => {
+                    const active = pathname === TAG_PATHS[tag];
+
+                    return (
+                      <button
+                        key={tag}
+                        onClick={() => {
+                          router.push(TAG_PATHS[tag]);
+                          setShowMenu(false);
+                        }}
+                        className={`
+                          flex
+                          w-full
+                          items-center
+                          px-5
+                          py-3
+                          text-left
+                          text-sm
+                          transition-colors
+                          hover:bg-amber-50
+
+                          ${
+                            active
+                              ? 'bg-amber-100 font-semibold text-amber-900'
+                              : 'text-slate-700'
+                          }
+                        `}
+                      >
+                        {tag}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <Link
+              href="/new-book"
+              className="rounded-lg p-2 text-amber-800 transition hover:bg-amber-100"
+            >
+              <span className="hidden md:inline font-semibold">New Book</span>
+
+              <svg
+                className="h-6 w-6 md:hidden"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 5v14m-7-7h14"
+                />
+              </svg>
+            </Link>
+
+            <div className="relative">
+              <button
+                onClick={() => setShowDropdown((prev) => !prev)}
+                className="rounded-full border border-amber-300 p-1 transition hover:bg-amber-100"
               >
                 {user.avatar ? (
                   <Image
                     src={user.avatar}
-                    alt={user.name || ''}
+                    alt={user.name ?? ''}
                     width={40}
                     height={40}
-                    className="h-9 w-9 rounded-full object-cover sm:h-10 sm:w-10"
+                    className="h-9 w-9 rounded-full sm:h-10 sm:w-10"
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white sm:h-10 sm:w-10">
-                    {user.name ? user.name.charAt(0).toUpperCase() : 'XY'}
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 font-bold text-white sm:h-10 sm:w-10">
+                    {user.name?.charAt(0).toUpperCase()}
                   </div>
                 )}
               </button>
 
               {showDropdown && (
-                <div className="absolute right-0 z-50 mt-2 w-56 rounded-xl border border-slate-100 bg-white p-4 shadow-lg sm:w-64">
-                  <div className="flex flex-col items-center text-center">
+                <div className="absolute right-0 z-50 mt-2 w-64 rounded-xl border bg-white p-4 shadow-xl">
+                  <div className="flex flex-col items-center">
                     {user.avatar && (
                       <Image
                         src={user.avatar}
-                        alt={user.name || ''}
-                        width={56}
-                        height={56}
-                        className="mb-2 h-14 w-14 rounded-full border border-slate-200 object-cover"
+                        alt={user.name ?? ''}
+                        width={60}
+                        height={60}
+                        className="mb-3 rounded-full"
                         referrerPolicy="no-referrer"
                       />
                     )}
 
-                    <h3 className="text-base font-bold text-slate-800">
-                      {user.name}
-                    </h3>
+                    <h3 className="font-bold">{user.name}</h3>
 
-                    <p className="mb-2 break-all text-xs text-slate-500">
+                    <p className="mb-4 break-all text-sm text-slate-500">
                       {user.email}
                     </p>
 
-                    <div className="my-2 w-full border-t border-slate-100 pt-3">
-                      <button
-                        onClick={handleLogout}
-                        className="w-full rounded-lg bg-red-50 px-3 py-2 text-sm font-semibold text-red-600 transition-colors duration-150 hover:bg-red-100"
-                      >
-                        Log Out
-                      </button>
-                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full rounded-lg bg-red-50 py-2 font-semibold text-red-600 hover:bg-red-100"
+                    >
+                      Log Out
+                    </button>
                   </div>
                 </div>
               )}
@@ -117,12 +213,12 @@ export default function Header() {
           <Link
             href="/login"
             onClick={handleGoogleLogin}
-            className="rounded border border-amber-300 bg-amber-200 px-4 py-2 text-sm font-semibold text-black transition-colors hover:bg-amber-300 sm:text-base"
+            className="rounded bg-amber-200 px-4 py-2 font-semibold hover:bg-amber-300"
           >
             Sign In
           </Link>
         )}
       </div>
-    </div>
+    </header>
   );
 }

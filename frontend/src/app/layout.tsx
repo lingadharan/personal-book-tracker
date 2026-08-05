@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { Toaster } from 'sonner';
 import { AuthContextProvider } from '@/context/authContext';
 import Header from '@/components/header';
-import Tags from '@/components/tags';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -60,7 +59,6 @@ export default function RootLayout({
             <header>
               <Header />
             </header>
-            <Tags />
             {children}
           </div>
         </AuthContextProvider>
