@@ -69,7 +69,9 @@ export const FilterBar = ({
 
           <Select
             value={filterOptions.sort}
-            onValueChange={(value) => handleFilterOptions('sort', value)}
+            onValueChange={(value) =>
+              handleFilterOptions('sort', value || 'desc')
+            }
           >
             <SelectTrigger className="w-[220px] border-amber-200 bg-white">
               <SelectValue>
@@ -101,7 +103,9 @@ export const FilterBar = ({
 
           <Select
             value={String(filterOptions.limit)}
-            onValueChange={(value) => handleFilterOptions('limit', value)}
+            onValueChange={(value) =>
+              handleFilterOptions('limit', value || '10')
+            }
           >
             <SelectTrigger className="w-[100px] border-amber-200 bg-white">
               <SelectValue>{(value) => value}</SelectValue>

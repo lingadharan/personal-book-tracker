@@ -11,7 +11,7 @@ export const TAG_PATHS: Record<(typeof TAG_CONSTANTS)[number], string> = {
   'Currently Reading': '/books/reading',
   'Completed Books': '/books/completed',
   Wishlist: '/books/wishlist',
-  'Favorite Books': '/books/favorites',
+  'Favorite Books': '/books/favourites',
 };
 
 export const READING_CONTENT_HEAD = [

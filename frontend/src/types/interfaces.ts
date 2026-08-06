@@ -39,3 +39,10 @@ export interface IFilterOptions {
   sort: 'desc' | 'asc';
   limit: 5 | 10 | 20 | 50;
 }
+
+export interface DialogProps {
+  open: boolean;
+  title: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}

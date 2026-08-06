@@ -43,7 +43,7 @@ export default function Favorites() {
   }, [pageNumber, favouriteFilterOptions]);
 
   if (!pagination || !completedBooks) {
-    return <p>Something went wrong on Reading page.</p>;
+    return <p>Something went wrong on Favourite page.</p>;
   }
 
   const handlePageChange = (newPage: number) => {
