@@ -46,7 +46,7 @@ export default function Table({
   const config = TABLE_CONFIG[tag];
 
   return (
-    <div className="mt-6 overflow-x-auto rounded-xl bg-white shadow">
+    <div className="mt-1 overflow-x-auto rounded-xl bg-white shadow">
       <table className="min-w-full border-collapse">
         <thead className="bg-amber-100">
           <tr>
