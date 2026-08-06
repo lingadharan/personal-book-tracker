@@ -33,3 +33,9 @@ export interface IUpdateApiResponse {
   success: boolean;
   data: Book;
 }
+
+export interface IFilterOptions {
+  field: string;
+  sort: 'desc' | 'asc';
+  limit: 5 | 10 | 20 | 50;
+}
