@@ -1,5 +1,11 @@
 'use client';
-import { Book, IBookPagination, IBooksApiResponse } from '@/types/interfaces';
+import {
+  Book,
+  IBookPagination,
+  IBooksApiResponse,
+  IFilterOptions,
+} from '@/types/interfaces';
+import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
@@ -9,10 +15,16 @@ export default function Favorites() {
   const [completedBooks, setCompletedBooks] = useState<null | Book[]>(null);
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [favouriteFilterOptions, setFavouriteFilterOptions] =
+    useState<IFilterOptions>({
+      field: 'createdAt',
+      sort: 'desc',
+      limit: 10,
+    });
 
   const getReadingBooks = async () => {
     const response = await fetch(
-      `${env.backendURL}/books?category=favourite&page=${pageNumber}`,
+      `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
       {
         method: 'GET',
         headers: {
@@ -28,10 +40,10 @@ export default function Favorites() {
 
   useEffect(() => {
     void getReadingBooks();
-  }, [pageNumber]);
+  }, [pageNumber, favouriteFilterOptions]);
 
   if (!pagination || !completedBooks) {
-    return <p>Something went wrong on Reading page.</p>;
+    return <p>Something went wrong on Favourite page.</p>;
   }
 
   const handlePageChange = (newPage: number) => {
@@ -41,6 +53,11 @@ export default function Favorites() {
 
   return (
     <div>
+      <FilterBar
+        filterOptions={favouriteFilterOptions}
+        setFilterOptions={setFavouriteFilterOptions}
+        setPageNumber={setPageNumber}
+      />
       <Table tag="Completed Books" book={completedBooks} />
       <Pagination
         pagination={pagination}

@@ -7,6 +7,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
 import { useAuth } from '@/context/authContext';
 import { TAG_CONSTANTS, TAG_PATHS } from '@/utiles/constants';
+import PlusIcon from '@/utiles/svg/plusIcon';
+import HamburgerIcon from '@/utiles/svg/hamburgerIcon';
+import PBTLogo from '@/utiles/svg/PBTLogo';
 
 export default function Header() {
   const { user } = useAuth();
@@ -43,14 +46,7 @@ export default function Header() {
         className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1 transition-all duration-200 hover:scale-[1.02] hover:bg-amber-50"
         onClick={() => router.push('/')}
       >
-        <Image
-          src="/personal-book-tracker.svg"
-          alt="Personal Book Tracker"
-          width={45}
-          height={45}
-          priority
-          className="h-10 w-10 transition-transform duration-200 group-hover:rotate-3 group-hover:scale-105 sm:h-11 sm:w-11"
-        />
+        <PBTLogo />
 
         <h1 className="hidden text-3xl font-bold text-amber-900 transition-colors duration-200 group-hover:text-amber-700 lg:block">
           Personal Book Tracker
@@ -65,24 +61,7 @@ export default function Header() {
                 onClick={() => setShowMenu(!showMenu)}
                 className="rounded-lg p-2 transition hover:bg-amber-100"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 text-amber-800"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <circle cx="5" cy="5" r="1.6" />
-                  <circle cx="12" cy="5" r="1.6" />
-                  <circle cx="19" cy="5" r="1.6" />
-
-                  <circle cx="5" cy="12" r="1.6" />
-                  <circle cx="12" cy="12" r="1.6" />
-                  <circle cx="19" cy="12" r="1.6" />
-
-                  <circle cx="5" cy="19" r="1.6" />
-                  <circle cx="12" cy="19" r="1.6" />
-                  <circle cx="19" cy="19" r="1.6" />
-                </svg>
+                <HamburgerIcon />
               </button>
 
               {showMenu && (
@@ -144,20 +123,7 @@ export default function Header() {
               className="rounded-lg p-2 text-amber-800 transition hover:bg-amber-100"
             >
               <span className="hidden md:inline font-semibold">New Book</span>
-
-              <svg
-                className="h-6 w-6 md:hidden"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 5v14m-7-7h14"
-                />
-              </svg>
+              <PlusIcon />
             </Link>
 
             <div className="relative">

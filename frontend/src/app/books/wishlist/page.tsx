@@ -1,5 +1,11 @@
 'use client';
-import { Book, IBookPagination, IBooksApiResponse } from '@/types/interfaces';
+import {
+  Book,
+  IBookPagination,
+  IBooksApiResponse,
+  IFilterOptions,
+} from '@/types/interfaces';
+import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
@@ -9,10 +15,16 @@ export default function Wishlist() {
   const [wishListBooks, setWishListBooks] = useState<null | Book[]>(null);
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [wishlistFilterOptions, setWishlistFilterOptions] =
+    useState<IFilterOptions>({
+      field: 'createdAt',
+      sort: 'desc',
+      limit: 10,
+    });
 
   const getReadingBooks = async () => {
     const response = await fetch(
-      `${env.backendURL}/books?category=favourite&page=${pageNumber}`,
+      `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
       {
         method: 'GET',
         headers: {
@@ -28,7 +40,7 @@ export default function Wishlist() {
 
   useEffect(() => {
     void getReadingBooks();
-  }, [pageNumber]);
+  }, [pageNumber, wishlistFilterOptions]);
 
   if (!pagination || !wishListBooks) {
     return <p>Something went wrong on Wishlist page.</p>;
@@ -41,6 +53,11 @@ export default function Wishlist() {
 
   return (
     <div>
+      <FilterBar
+        filterOptions={wishlistFilterOptions}
+        setFilterOptions={setWishlistFilterOptions}
+        setPageNumber={setPageNumber}
+      />
       <Table tag="Wishlist" book={wishListBooks} />
       <Pagination
         pagination={pagination}

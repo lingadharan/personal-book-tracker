@@ -1,5 +1,11 @@
 'use client';
-import { Book, IBookPagination, IBooksApiResponse } from '@/types/interfaces';
+import {
+  Book,
+  IBookPagination,
+  IBooksApiResponse,
+  IFilterOptions,
+} from '@/types/interfaces';
+import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
@@ -9,10 +15,16 @@ export default function Completed() {
   const [completedBooks, setCompletedBooks] = useState<null | Book[]>(null);
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [completedFilterOptions, setCompletedFilterOptions] =
+    useState<IFilterOptions>({
+      field: 'createdAt',
+      sort: 'desc',
+      limit: 10,
+    });
 
   const getReadingBooks = async () => {
     const response = await fetch(
-      `${env.backendURL}/books?category=read&page=${pageNumber}`,
+      `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
       {
         method: 'GET',
         headers: {
@@ -28,7 +40,7 @@ export default function Completed() {
 
   useEffect(() => {
     void getReadingBooks();
-  }, [pageNumber]);
+  }, [pageNumber, completedFilterOptions]);
 
   if (!pagination || !completedBooks) {
     return <p>Something went wrong on Completed page.</p>;
@@ -41,6 +53,11 @@ export default function Completed() {
 
   return (
     <div>
+      <FilterBar
+        filterOptions={completedFilterOptions}
+        setFilterOptions={setCompletedFilterOptions}
+        setPageNumber={setPageNumber}
+      />
       <Table tag="Completed Books" book={completedBooks} />
       <Pagination
         pagination={pagination}

@@ -33,3 +33,16 @@ export interface IUpdateApiResponse {
   success: boolean;
   data: Book;
 }
+
+export interface IFilterOptions {
+  field: string;
+  sort: 'desc' | 'asc';
+  limit: 5 | 10 | 20 | 50;
+}
+
+export interface DialogProps {
+  open: boolean;
+  title: string;
+  onClose: () => void;
+  children: React.ReactNode;
+}

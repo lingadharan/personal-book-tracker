@@ -10,6 +10,8 @@ import {
 import handleDeleteButton from '@/utiles/deleteBookDetails';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import Dialog from './dialog';
+import { useState } from 'react';
 
 type TableConfig = {
   headers: string[];
@@ -45,8 +47,29 @@ export default function Table({
   const router = useRouter();
   const config = TABLE_CONFIG[tag];
 
+  const [isDeleteOpen, setIsDeleteOpen] = useState<boolean>(false);
+  const [deleteBookId, setDeleteBookId] = useState<string | null>(null);
+  const [deleteBookTitle, setDeleteBookTitle] = useState<string | null>(null);
+  const handleDeleteOnTable = (_id: string, title: string) => {
+    setDeleteBookId(_id);
+    setDeleteBookTitle(title);
+    setIsDeleteOpen(true);
+  };
+
+  const handleDelete = async (_id: string | null, title: string | null) => {
+    if (!_id || !title) {
+      toast.error(`ID is required to delete the book.`);
+      setIsDeleteOpen(false);
+      return;
+    }
+    await handleDeleteButton(_id);
+    router.push('/');
+    toast.error(`Book ${title} was deleted successfully!`);
+    setIsDeleteOpen(false);
+  };
+
   return (
-    <div className="mt-6 overflow-x-auto rounded-xl bg-white shadow">
+    <div className="mt-1 overflow-x-auto rounded-xl bg-white shadow">
       <table className="min-w-full border-collapse">
         <thead className="bg-amber-100">
           <tr>
@@ -101,13 +124,7 @@ export default function Table({
                     </button>
 
                     <button
-                      onClick={async () => {
-                        await handleDeleteButton(book._id);
-                        router.push('/');
-                        toast.error(
-                          `Book ${book.title} was deleted successfully!`
-                        );
-                      }}
+                      onClick={() => handleDeleteOnTable(book._id, book.title)}
                       className="rounded-md bg-red-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-red-600"
                     >
                       Delete
@@ -119,6 +136,32 @@ export default function Table({
           )}
         </tbody>
       </table>
+      <Dialog
+        open={isDeleteOpen}
+        title="Delete Book"
+        onClose={() => setIsDeleteOpen(false)}
+        footer={
+          <>
+            <button
+              onClick={() => setIsDeleteOpen(false)}
+              className="rounded-lg border px-4 py-2"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={() => handleDelete(deleteBookId, deleteBookTitle)}
+              className="rounded-lg bg-red-600 px-4 py-2 text-white"
+            >
+              Delete
+            </button>
+          </>
+        }
+      >
+        <p className="text-amber-900">
+          Are you sure you want to delete this book?
+        </p>
+      </Dialog>
     </div>
   );
 }

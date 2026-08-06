@@ -1,5 +1,11 @@
 'use client';
-import { Book, IBookPagination, IBooksApiResponse } from '@/types/interfaces';
+import {
+  Book,
+  IBookPagination,
+  IBooksApiResponse,
+  IFilterOptions,
+} from '@/types/interfaces';
+import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
@@ -9,10 +15,16 @@ export default function Reading() {
   const [readingBooks, setReadingBooks] = useState<null | Book[]>(null);
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
+  const [readingFilterOptions, setReadingFilterOptions] =
+    useState<IFilterOptions>({
+      field: 'createdAt',
+      sort: 'desc',
+      limit: 10,
+    });
 
   const getReadingBooks = async () => {
     const response = await fetch(
-      `${env.backendURL}/books?category=reading&page=${pageNumber}`,
+      `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${readingFilterOptions.sort}&field=${readingFilterOptions.field}&limit=${readingFilterOptions.limit}`,
       {
         method: 'GET',
         headers: {
@@ -28,7 +40,7 @@ export default function Reading() {
 
   useEffect(() => {
     void getReadingBooks();
-  }, [pageNumber]);
+  }, [pageNumber, readingFilterOptions]);
 
   if (!pagination || !readingBooks) {
     return <p>Something went wrong on Reading page.</p>;
@@ -40,6 +52,11 @@ export default function Reading() {
 
   return (
     <div>
+      <FilterBar
+        filterOptions={readingFilterOptions}
+        setFilterOptions={setReadingFilterOptions}
+        setPageNumber={setPageNumber}
+      />
       <Table tag="Currently Reading" book={readingBooks} />
       <Pagination
         pagination={pagination}
