@@ -25,15 +25,15 @@ function LoginContent() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-amber-100">
+      <div className="flex min-h-screen items-center justify-center bg-primary-100">
         <p>Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md rounded-2xl border border-amber-200 bg-white p-6 shadow-lg sm:p-8">
+    <div className="flex min-h-screen items-center justify-center bg-primary-100 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md rounded-2xl border border-primary-200 bg-white p-6 shadow-lg sm:p-8">
         <div className=" mb-8 flex flex-col items-center text-center">
           <Image
             src="/personal-book-tracker.svg"
@@ -44,7 +44,7 @@ function LoginContent() {
             priority
           />
 
-          <h1 className="text-3xl font-bold text-amber-900">Welcome Back</h1>
+          <h1 className="text-3xl font-bold text-primary-900">Welcome Back</h1>
 
           <p className="mt-2 text-sm text-slate-600 sm:text-base">
             Sign in to continue managing your personal library.
@@ -66,14 +66,14 @@ function LoginContent() {
         justify-center
         gap-3
         rounded-lg
-        bg-amber-600
+        bg-primary-600
         px-5
         py-3
         font-semibold
         text-white
         transition-all
         duration-200
-        hover:bg-amber-700
+        hover:bg-primary-700
         hover:shadow-md
         active:scale-[0.98]
       "

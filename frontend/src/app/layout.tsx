@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from 'sonner';
 import { AuthContextProvider } from '@/context/authContext';
 import Header from '@/components/header';
+import { Providers } from './providers';
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -55,12 +56,14 @@ export default function RootLayout({
     <html lang="en" className={cn('font-sans', geist.variable)}>
       <body>
         <AuthContextProvider>
-          <div className="min-h-full flex flex-col bg-amber-100">
-            <header>
-              <Header />
-            </header>
-            {children}
-          </div>
+          <Providers>
+            <div className="min-h-full flex flex-col bg-primary-100">
+              <header>
+                <Header />
+              </header>
+              {children}
+            </div>
+          </Providers>
         </AuthContextProvider>
         <Toaster position="top-right" richColors duration={3000} />
       </body>

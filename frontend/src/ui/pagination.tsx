@@ -66,7 +66,7 @@ export default function Pagination({
                 onClick={() => handlePageChange(pageNum)}
                 className={`px-3 py-1 text-sm font-medium rounded-md transition-colors ${
                   pageNum === pageNumber
-                    ? 'bg-blue-600 text-white'
+                    ? 'bg-primary-600 text-white'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >

@@ -10,6 +10,7 @@ import { TAG_CONSTANTS, TAG_PATHS } from '@/utiles/constants';
 import PlusIcon from '@/utiles/svg/plusIcon';
 import HamburgerIcon from '@/utiles/svg/hamburgerIcon';
 import PBTLogo from '@/utiles/svg/PBTLogo';
+import { ThemeSwitcher } from '@/ui/themeSwitcher';
 
 export default function Header() {
   const { user } = useAuth();
@@ -41,25 +42,26 @@ export default function Header() {
   };
 
   return (
-    <header className="flex items-center justify-between bg-amber-50 px-4 py-3 shadow-sm">
+    <header className="flex items-center justify-between bg-primary-50 px-4 py-3 shadow-sm">
       <div
-        className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1 transition-all duration-200 hover:scale-[1.02] hover:bg-amber-50"
+        className="group flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1 transition-all duration-200 hover:scale-[1.02] hover:bg-primary-50"
         onClick={() => router.push('/')}
       >
         <PBTLogo />
 
-        <h1 className="hidden text-3xl font-bold text-amber-900 transition-colors duration-200 group-hover:text-amber-700 lg:block">
+        <h1 className="hidden text-3xl font-bold text-primary-900 transition-colors duration-200 group-hover:text-primary-700 lg:block">
           Personal Book Tracker
         </h1>
       </div>
 
-      <div className="flex items-center justify-end gap-4">
+      <div className="flex items-center justify-end gap-1 md:gap-2 lg:gap-4">
+        <ThemeSwitcher />
         {user ? (
           <>
             <div className="relative">
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="rounded-lg p-2 transition hover:bg-amber-100"
+                className="rounded-lg p-2 transition hover:bg-primary-100"
               >
                 <HamburgerIcon />
               </button>
@@ -101,11 +103,11 @@ export default function Header() {
                           text-left
                           text-sm
                           transition-colors
-                          hover:bg-amber-50
+                          hover:bg-primary-50
 
                           ${
                             active
-                              ? 'bg-amber-100 font-semibold text-amber-900'
+                              ? 'bg-primary-100 font-semibold text-primary-900'
                               : 'text-slate-700'
                           }
                         `}
@@ -120,7 +122,7 @@ export default function Header() {
 
             <Link
               href="/new-book"
-              className="rounded-lg p-2 text-amber-800 transition hover:bg-amber-100"
+              className="rounded-lg p-2 text-primary-800 transition hover:bg-primary-100"
             >
               <span className="hidden md:inline font-semibold">New Book</span>
               <PlusIcon />
@@ -129,7 +131,7 @@ export default function Header() {
             <div className="relative">
               <button
                 onClick={() => setShowDropdown((prev) => !prev)}
-                className="rounded-full border border-amber-300 p-1 transition hover:bg-amber-100"
+                className="rounded-full border border-primary-300 p-1 transition hover:bg-primary-100"
               >
                 {user.avatar ? (
                   <Image
@@ -141,7 +143,7 @@ export default function Header() {
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-600 font-bold text-white sm:h-10 sm:w-10">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-600 font-bold text-white sm:h-10 sm:w-10">
                     {user.name?.charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -169,7 +171,7 @@ export default function Header() {
 
                     <button
                       onClick={handleLogout}
-                      className="w-full rounded-lg bg-red-50 py-2 font-semibold text-red-600 hover:bg-red-100"
+                      className="w-full rounded-lg bg-primary-50 py-2 font-semibold text-primary-600 hover:bg-primary-100"
                     >
                       Log Out
                     </button>
@@ -182,7 +184,7 @@ export default function Header() {
           <Link
             href="/login"
             onClick={handleGoogleLogin}
-            className="rounded bg-amber-200 px-4 py-2 font-semibold hover:bg-amber-300"
+            className="rounded bg-primary-200 px-4 py-2 font-semibold hover:bg-primary-300"
           >
             Sign In
           </Link>

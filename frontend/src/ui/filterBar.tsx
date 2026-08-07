@@ -27,10 +27,10 @@ export const FilterBar = ({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 rounded-t-lg border border-amber-200/60 bg-[#FFFDF0] p-3 shadow-sm">
+    <div className="flex flex-wrap items-center justify-between gap-3 rounded-t-lg border border-primary-200/60 bg-primary-[#FFFDF0] p-3 shadow-sm">
       <div className="flex flex-wrap items-center gap-4">
         <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-amber-950">
+          <label className="text-sm font-semibold text-primary-950">
             Sort By:
           </label>
           <Select
@@ -39,7 +39,7 @@ export const FilterBar = ({
               handleFilterOptions('field', value || 'createdAt')
             }
           >
-            <SelectTrigger className="w-[170px] border-amber-200 bg-white">
+            <SelectTrigger className="w-[170px] border-primary-200 bg-white">
               <SelectValue>
                 {(value) => {
                   switch (value) {
@@ -65,7 +65,9 @@ export const FilterBar = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-amber-950">Order:</label>
+          <label className="text-sm font-semibold text-primary-950">
+            Order:
+          </label>
 
           <Select
             value={filterOptions.sort}
@@ -73,7 +75,7 @@ export const FilterBar = ({
               handleFilterOptions('sort', value || 'desc')
             }
           >
-            <SelectTrigger className="w-[220px] border-amber-200 bg-white">
+            <SelectTrigger className="w-[220px] border-primary-200 bg-white">
               <SelectValue>
                 {(value) => {
                   switch (value) {
@@ -97,7 +99,7 @@ export const FilterBar = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <label className="text-sm font-semibold text-amber-950">
+          <label className="text-sm font-semibold text-primary-950">
             Per Page:
           </label>
 
@@ -107,7 +109,7 @@ export const FilterBar = ({
               handleFilterOptions('limit', value || '10')
             }
           >
-            <SelectTrigger className="w-[100px] border-amber-200 bg-white">
+            <SelectTrigger className="w-[100px] border-primary-200 bg-white">
               <SelectValue>{(value) => value}</SelectValue>
             </SelectTrigger>
 
