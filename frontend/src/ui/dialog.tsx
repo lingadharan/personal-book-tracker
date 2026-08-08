@@ -29,8 +29,8 @@ export default function Dialog({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="border-b border-amber-200 px-6 py-4">
-          <h2 className="text-lg font-semibold text-amber-950">{title}</h2>
+        <div className="border-b border-primary-200 px-6 py-4">
+          <h2 className="text-lg font-semibold text-primary-950">{title}</h2>
         </div>
 
         {/* Body */}
@@ -38,7 +38,7 @@ export default function Dialog({
 
         {/* Footer */}
         {footer && (
-          <div className="flex justify-end gap-3 border-t border-amber-200 px-6 py-4">
+          <div className="flex justify-end gap-3 border-t border-primary-200 px-6 py-4">
             {footer}
           </div>
         )}

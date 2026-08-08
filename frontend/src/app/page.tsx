@@ -1,5 +1,6 @@
 import DashBoardContent from '@/components/contents/dashboardContent';
 import { Metadata } from 'next';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   robots: {
@@ -25,7 +26,8 @@ const schema = {
 export default function Home() {
   return (
     <>
-      <script
+      <Script
+        id="personal-book-tracker-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />

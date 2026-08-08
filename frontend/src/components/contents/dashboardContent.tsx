@@ -19,9 +19,9 @@ export default function DashBoardContent() {
   }
 
   return (
-    <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-amber-100 p-4 sm:grid-cols-2 xl:grid-cols-2">
+    <div className=" grid grid-cols-1 gap-4 rounded-2xl bg-primary-100 p-4 sm:grid-cols-2 xl:grid-cols-2">
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
-        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-primary-900">
           Reading
         </h3>
 
@@ -35,7 +35,7 @@ export default function DashBoardContent() {
       </div>
 
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
-        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-primary-900">
           Read
         </h3>
 
@@ -49,7 +49,7 @@ export default function DashBoardContent() {
       </div>
 
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
-        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-primary-900">
           Interesting Books
         </h3>
 
@@ -63,7 +63,7 @@ export default function DashBoardContent() {
       </div>
 
       <div className="flex h-72 flex-col rounded-xl bg-white p-4 shadow">
-        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-amber-900">
+        <h3 className="mb-3 border-b pb-2 text-lg font-bold text-primary-900">
           Favourite Books
         </h3>
 

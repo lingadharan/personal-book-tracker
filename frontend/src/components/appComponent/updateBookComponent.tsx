@@ -138,17 +138,17 @@ function UpdateBookComponent() {
   };
 
   return (
-    <div className="min-h-screen bg-amber-100 px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-primary-100 px-4 py-8 sm:px-6 lg:px-8">
       <form
         onSubmit={handleSubmit}
         className="mx-auto w-full max-w-3xl rounded-2xl bg-white p-6 shadow-lg sm:p-8"
       >
-        <h2 className="mb-8 text-center text-3xl font-bold text-amber-900">
+        <h2 className="mb-8 text-center text-3xl font-bold text-primary-900">
           Update Book
         </h2>
 
         <div className="mb-6">
-          <label className="mb-2 block font-semibold text-amber-900">
+          <label className="mb-2 block font-semibold text-primary-900">
             Book Name <span className="text-red-500">*</span>
           </label>
 
@@ -160,12 +160,12 @@ function UpdateBookComponent() {
             value={updateBookDetails.title}
             onChange={handleInputChange}
             placeholder="Enter book name..."
-            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
           />
         </div>
 
         <div className="mb-6">
-          <label className="mb-2 block font-semibold text-amber-900">
+          <label className="mb-2 block font-semibold text-primary-900">
             Author <span className="text-red-500">*</span>
           </label>
 
@@ -177,12 +177,12 @@ function UpdateBookComponent() {
             value={updateBookDetails.author}
             onChange={handleInputChange}
             placeholder="Enter author..."
-            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
           />
         </div>
 
         <div className="mb-6">
-          <label className="mb-4 block font-semibold text-amber-900">
+          <label className="mb-4 block font-semibold text-primary-900">
             Category <span className="text-red-500">*</span>
           </label>
 
@@ -191,7 +191,7 @@ function UpdateBookComponent() {
               (cat) => (
                 <label
                   key={cat}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 transition hover:bg-amber-100"
+                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-3 transition hover:bg-primary-100"
                 >
                   <input
                     type="radio"
@@ -203,7 +203,7 @@ function UpdateBookComponent() {
                         cat.toLowerCase() as Book['category']
                       )
                     }
-                    className="accent-amber-600"
+                    className="accent-primary-600"
                   />
                   <span>{cat}</span>
                 </label>
@@ -213,7 +213,7 @@ function UpdateBookComponent() {
         </div>
 
         <div className="mb-6">
-          <label className="mb-2 block font-semibold text-amber-900">
+          <label className="mb-2 block font-semibold text-primary-900">
             Page No
           </label>
 
@@ -222,13 +222,13 @@ function UpdateBookComponent() {
             name="currentPage"
             value={updateBookDetails.currentPage}
             onChange={handleInputChange}
-            className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
           />
         </div>
 
         {updateBookDetails.category === 'read' && (
           <div className="mb-6">
-            <label className="mb-2 block font-semibold text-amber-900">
+            <label className="mb-2 block font-semibold text-primary-900">
               Duration to Complete
             </label>
 
@@ -238,14 +238,14 @@ function UpdateBookComponent() {
               value={updateBookDetails.durationToComplete}
               onChange={handleInputChange}
               placeholder="Example: 5 days"
-              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
         )}
 
         {updateBookDetails.category === 'interest' && (
           <div className="mb-6">
-            <label className="mb-2 block font-semibold text-amber-900">
+            <label className="mb-2 block font-semibold text-primary-900">
               Suggested By
             </label>
 
@@ -255,14 +255,14 @@ function UpdateBookComponent() {
               minLength={3}
               value={updateBookDetails.suggestedBy}
               onChange={handleInputChange}
-              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             />
           </div>
         )}
 
         {updateBookDetails.category === 'favourite' && (
           <div className="mb-6">
-            <label className="mb-2 block font-semibold text-amber-900">
+            <label className="mb-2 block font-semibold text-primary-900">
               Read Status
             </label>
 
@@ -270,7 +270,7 @@ function UpdateBookComponent() {
               name="readStatus"
               value={updateBookDetails.readStatus}
               onChange={handleInputChange}
-              className="w-full rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+              className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             >
               {readStatusOptions.map((status) => (
                 <option key={status} value={status}>
@@ -282,7 +282,7 @@ function UpdateBookComponent() {
         )}
 
         <div className="mb-8">
-          <label className="mb-2 block font-semibold text-amber-900">
+          <label className="mb-2 block font-semibold text-primary-900">
             Notes
           </label>
 
@@ -292,7 +292,7 @@ function UpdateBookComponent() {
             value={updateBookDetails.notes}
             onChange={handleInputChange}
             placeholder="Write your thoughts about this book..."
-            className="w-full resize-none rounded-lg border border-amber-300 px-4 py-3 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="w-full resize-none rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
           />
         </div>
 
@@ -300,14 +300,14 @@ function UpdateBookComponent() {
           <button
             type="button"
             onClick={handleCancel}
-            className="rounded-lg border border-amber-400 px-6 py-3 font-semibold text-amber-900 transition hover:bg-amber-100"
+            className="rounded-lg border border-primary-400 px-6 py-3 font-semibold text-primary-900 transition hover:bg-primary-100"
           >
             Cancel
           </button>
 
           <button
             type="submit"
-            className="rounded-lg bg-amber-600 px-6 py-3 font-semibold text-white transition hover:bg-amber-700"
+            className="rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white transition hover:bg-primary-700"
           >
             Update Book
           </button>

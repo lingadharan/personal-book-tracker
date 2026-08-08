@@ -71,12 +71,12 @@ export default function Table({
   return (
     <div className="mt-1 overflow-x-auto rounded-xl bg-white shadow">
       <table className="min-w-full border-collapse">
-        <thead className="bg-amber-100">
+        <thead className="bg-primary-200">
           <tr>
             {config.headers.map((header) => (
               <th
                 key={header}
-                className="px-4 py-3 text-center text-sm font-semibold text-amber-900"
+                className="px-4 py-3 text-center text-sm font-semibold text-primary-900"
               >
                 {header}
               </th>
@@ -84,7 +84,7 @@ export default function Table({
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="bg-primary-50">
           {!book || book.length === 0 ? (
             <tr>
               <td
@@ -98,7 +98,7 @@ export default function Table({
             book.map((book, index) => (
               <tr
                 key={book._id}
-                className="border-b hover:bg-amber-50 transition-colors"
+                className="border-b hover:bg-primary-100 transition-colors"
               >
                 <td className="px-4 py-3 text-center">{index + 1}</td>
 
@@ -118,7 +118,7 @@ export default function Table({
                       onClick={() =>
                         router.push(`/update-book?_id=${book._id}`)
                       }
-                      className="rounded-md bg-blue-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-blue-600"
+                      className="rounded-md bg-primary-500 px-3 py-1 text-sm font-medium text-white transition hover:bg-primary-600"
                     >
                       Update
                     </button>
@@ -158,7 +158,7 @@ export default function Table({
           </>
         }
       >
-        <p className="text-amber-900">
+        <p className="text-primary-900">
           Are you sure you want to delete this book?
         </p>
       </Dialog>
