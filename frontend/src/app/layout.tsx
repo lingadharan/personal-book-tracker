@@ -53,18 +53,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn('font-sans', geist.variable)}>
+    <html
+      lang="en"
+      className={cn('font-sans', geist.variable)}
+      suppressHydrationWarning
+    >
       <body>
-        <AuthContextProvider>
-          <Providers>
+        <Providers>
+          <AuthContextProvider>
             <div className="min-h-full flex flex-col bg-primary-100">
               <header>
                 <Header />
               </header>
               {children}
             </div>
-          </Providers>
-        </AuthContextProvider>
+          </AuthContextProvider>
+        </Providers>
         <Toaster position="top-right" richColors duration={3000} />
       </body>
     </html>
