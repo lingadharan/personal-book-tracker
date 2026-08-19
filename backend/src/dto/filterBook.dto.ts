@@ -9,6 +9,7 @@ export interface IFilterBookControllerRequestDTO {
 }
 
 export interface IFilterBookRequestDTO {
+  userId: string;
   page: number;
   limit: number;
   sort?: string;

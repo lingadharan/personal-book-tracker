@@ -25,7 +25,7 @@ export default function Favorites() {
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
+        `${env.backendURL}/books?category=favourite&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',

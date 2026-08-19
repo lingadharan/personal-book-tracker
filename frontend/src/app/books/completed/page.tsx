@@ -25,7 +25,7 @@ export default function Completed() {
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
+        `${env.backendURL}/books?category=read&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',

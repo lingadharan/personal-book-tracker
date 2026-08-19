@@ -1,3 +1,4 @@
+import type mongoose from 'mongoose';
 import type {
   IFilterBookRequestDTO,
   IFilterBookResponseDTO,
@@ -44,8 +45,14 @@ export default class BookService {
     return result;
   }
 
-  async deleteBookDetails(_id: string): Promise<IBook> {
-    const result = await this.bookRepository.deleteBook(_id);
+  async deleteBookDetails({
+    _id,
+    userId,
+  }: {
+    _id: string;
+    userId: mongoose.Types.ObjectId;
+  }): Promise<IBook> {
+    const result = await this.bookRepository.deleteBook({ _id, userId });
     if (!result) {
       throw new NotFoundError('Book not found');
     }
@@ -58,6 +65,7 @@ export default class BookService {
     const repository = new BookRepository();
 
     const {
+      userId,
       page,
       limit,
       sort = 'desc',
@@ -65,7 +73,7 @@ export default class BookService {
       category,
     } = filters;
 
-    const queryFilter: Record<string, unknown> = {};
+    const queryFilter: Record<string, unknown> = { userId: userId };
 
     if (category) {
       queryFilter.category = category;

@@ -25,7 +25,7 @@ export default function Wishlist() {
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
+        `${env.backendURL}/books?category=interest&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',

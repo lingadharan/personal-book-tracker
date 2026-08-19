@@ -83,6 +83,13 @@ function validateBook(book: IBook, isUpdate = false): string | null {
 export default class BookController {
   async createBookDetails(req: Request, res: Response): Promise<Response> {
     const { books } = req.body as ICreateBookDetailsRequest;
+    const userId = new mongoose.Types.ObjectId(req.userId);
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
 
     if (!books || !Array.isArray(books) || books.length === 0) {
       return res.status(400).json({
@@ -103,7 +110,11 @@ export default class BookController {
 
     try {
       const service = new BookService();
-      const result = await service.createBookDetails(books);
+      const booksWithOwner = books.map((book) => ({
+        ...book,
+        userId,
+      }));
+      const result = await service.createBookDetails(booksWithOwner);
       return res.status(201).json({
         success: true,
         data: result,
@@ -152,6 +163,16 @@ export default class BookController {
   async updateBookDetails(req: Request, res: Response): Promise<Response> {
     try {
       const body = req.body as IUpdateBookDetailsDTO;
+
+      const userId = new mongoose.Types.ObjectId(req.userId);
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+        });
+      }
+
       if (!mongoose.isValidObjectId(body._id)) {
         return res.status(400).json({
           success: false,
@@ -175,7 +196,10 @@ export default class BookController {
       }
 
       const service = new BookService();
-      const updatedBook = await service.updateBookDetails(body);
+      const updatedBook = await service.updateBookDetails({
+        ...body,
+        userId: userId,
+      });
 
       return res.status(200).json({
         success: true,
@@ -199,6 +223,15 @@ export default class BookController {
     try {
       const { _id } = req.query;
 
+      const userId = new mongoose.Types.ObjectId(req.userId);
+
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          message: 'Authentication required',
+        });
+      }
+
       if (!_id || !mongoose.isValidObjectId(_id)) {
         return res.status(400).json({
           success: false,
@@ -207,7 +240,10 @@ export default class BookController {
       }
 
       const service = new BookService();
-      const deletedBook = await service.deleteBookDetails(_id as string);
+      const deletedBook = await service.deleteBookDetails({
+        _id: _id as string,
+        userId: userId,
+      });
 
       return res.status(200).json({
         success: true,
@@ -238,6 +274,15 @@ export default class BookController {
       category,
     } = req.query as IFilterBookControllerRequestDTO;
 
+    const userId = req.userId;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: 'Authentication required',
+      });
+    }
+
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
 
@@ -256,6 +301,7 @@ export default class BookController {
     }
 
     const serviceRequest: IFilterBookRequestDTO = {
+      userId: userId,
       page: pageNumber,
       limit: limitNumber,
       ...(sort && { sort }),
