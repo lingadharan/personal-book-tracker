@@ -7,25 +7,25 @@ import {
   redirectToGoogle,
   verifyUser,
 } from '../auth/auth.js';
+import { authenticateUser } from '../middleware/authenticateUser.js';
 
 const router = Router();
 const bookController = new BookController();
-const userController = new UserController();
 
 // Book
-router.get('/get-book', (req: Request, res: Response) =>
+router.get('/get-book', authenticateUser, (req: Request, res: Response) =>
   bookController.getBookDetails(req, res)
 );
-router.post('/add-book', (req: Request, res: Response) =>
+router.post('/add-book', authenticateUser, (req: Request, res: Response) =>
   bookController.createBookDetails(req, res)
 );
-router.put('/update-book', (req: Request, res: Response) =>
+router.put('/update-book', authenticateUser, (req: Request, res: Response) =>
   bookController.updateBookDetails(req, res)
 );
-router.delete('/delete-book', (req: Request, res: Response) =>
+router.delete('/delete-book', authenticateUser, (req: Request, res: Response) =>
   bookController.deleteBookDetails(req, res)
 );
-router.get('/books', (req: Request, res: Response) =>
+router.get('/books', authenticateUser, (req: Request, res: Response) =>
   bookController.filterBookController(req, res)
 );
 

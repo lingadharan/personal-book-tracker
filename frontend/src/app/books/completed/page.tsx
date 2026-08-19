@@ -28,6 +28,7 @@ export default function Completed() {
         `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
         {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },

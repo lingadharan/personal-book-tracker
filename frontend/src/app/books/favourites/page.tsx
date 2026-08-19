@@ -28,6 +28,7 @@ export default function Favorites() {
         `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
         {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },

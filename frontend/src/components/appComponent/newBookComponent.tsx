@@ -98,6 +98,7 @@ export default function NewBookComponent() {
 
       const response = await fetch(`${env.backendURL}/add-book`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

@@ -30,7 +30,13 @@ function UpdateBookComponent() {
 
   useEffect(() => {
     const getBook = async () => {
-      const response = await fetch(`${env.backendURL}/get-book?_id=${_id}`);
+      const response = await fetch(`${env.backendURL}/get-book?_id=${_id}`, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       const data = (await response.json()) as IUpdateApiResponse;
 
       setNewBookDetails(data.data);
@@ -114,6 +120,7 @@ function UpdateBookComponent() {
 
       const response = await fetch(`${env.backendURL}/update-book`, {
         method: 'PUT',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

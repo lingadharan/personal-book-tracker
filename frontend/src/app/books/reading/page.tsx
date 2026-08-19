@@ -28,6 +28,7 @@ export default function Reading() {
         `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${readingFilterOptions.sort}&field=${readingFilterOptions.field}&limit=${readingFilterOptions.limit}`,
         {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },

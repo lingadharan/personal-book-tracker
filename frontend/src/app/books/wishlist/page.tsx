@@ -28,6 +28,7 @@ export default function Wishlist() {
         `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
         {
           method: 'GET',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
           },
