@@ -1,6 +1,7 @@
 import mongoose, { Schema, type Document } from 'mongoose';
 
 export interface IBook {
+  userId: mongoose.Types.ObjectId;
   title: string;
   author: string;
   currentPage?: number;
@@ -13,6 +14,12 @@ export interface IBook {
 
 const bookSchema = new Schema<IBook>(
   {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      index: true,
+    },
     title: {
       type: String,
       required: true,

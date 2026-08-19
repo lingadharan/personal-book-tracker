@@ -15,7 +15,6 @@ export interface IAuthContext {
   user: IUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  refreshAuth: () => Promise<void>;
 }
 
 export interface IAuthResponse {
@@ -34,27 +33,26 @@ export function AuthContextProvider({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isAuthenticated = !(user === null);
 
-  const refreshAuth = async () => {
-    try {
-      const response = await fetch(`${env.backendURL}/auth/me`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-      const data = (await response.json()) as IAuthResponse;
-      if (data.isAuthenticated && data.user) {
-        setUser(data.user);
-      } else {
-        setUser(null);
-      }
-    } catch (error: unknown) {
-      console.error('Error on Auth: ', error);
-      setUser(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const refreshAuth = async () => {
+      try {
+        const response = await fetch(`${env.backendURL}/auth/me`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = (await response.json()) as IAuthResponse;
+        if (data.isAuthenticated && data.user) {
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error: unknown) {
+        console.error('Error on Auth: ', error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
     void refreshAuth();
   }, []);
 
@@ -64,7 +62,6 @@ export function AuthContextProvider({
         user: user,
         isAuthenticated: isAuthenticated,
         isLoading: isLoading,
-        refreshAuth: refreshAuth,
       }}
     >
       {children}

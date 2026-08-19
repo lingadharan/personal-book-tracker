@@ -2,6 +2,7 @@ import axios from 'axios';
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import type { Request, Response } from 'express';
 import User from '../models/user.js';
+import { decode } from 'node:punycode';
 
 export const redirectToGoogle = (req: Request, res: Response): void => {
   const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';

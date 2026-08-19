@@ -1,3 +1,4 @@
+import type mongoose from 'mongoose';
 import type { IFilterBookRequestDTO } from '../dto/filterBook.dto.js';
 import type { IUpdateBookDetailsDTO } from '../dto/updateBookDetailsRequest.dto.js';
 import Book, { type IBook } from '../models/book.js';
@@ -16,14 +17,24 @@ export default class BookRepository {
   }
 
   async updateBook(updateData: IUpdateBookDetailsDTO): Promise<IBook | null> {
-    return await Book.findOneAndUpdate({ _id: updateData._id }, updateData, {
-      new: true,
-      runValidators: true,
-    });
+    return await Book.findOneAndUpdate(
+      { _id: updateData._id, userId: updateData.userId },
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
   }
 
-  async deleteBook(_id: string): Promise<IBook | null> {
-    return await Book.findOneAndDelete({ _id: _id });
+  async deleteBook({
+    _id,
+    userId,
+  }: {
+    _id: string;
+    userId: mongoose.Types.ObjectId;
+  }): Promise<IBook | null> {
+    return await Book.findOneAndDelete({ _id: _id, userId: userId });
   }
 
   async filterBookRepository(

@@ -4,6 +4,7 @@ export default async function handleDeleteButton(_id: string) {
   try {
     await fetch(`${env.backendURL}/delete-book?_id=${_id}`, {
       method: 'DELETE',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
