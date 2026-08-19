@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
 import { useAuth } from '@/context/authContext';
@@ -11,6 +11,7 @@ import PlusIcon from '@/utiles/svg/plusIcon';
 import HamburgerIcon from '@/utiles/svg/hamburgerIcon';
 import PBTLogo from '@/utiles/svg/PBTLogo';
 import { ThemeSwitcher } from '@/ui/themeSwitcher';
+import useClickOutside from '@/hooks/useClickOutside';
 
 export default function Header() {
   const { user } = useAuth();
@@ -20,6 +21,11 @@ export default function Header() {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(menuRef, () => {
+    setShowMenu(false);
+  });
 
   const handleGoogleLogin = () => {
     window.location.href = `${env.backendURL}/auth/google`;
@@ -58,64 +64,43 @@ export default function Header() {
         <ThemeSwitcher />
         {user ? (
           <>
-            <div className="relative">
+            <div ref={menuRef} className="relative">
               <button
-                onClick={() => setShowMenu(!showMenu)}
-                className="rounded-lg p-2 transition hover:bg-primary-100"
+                type="button"
+                onClick={() => setShowMenu((prev) => !prev)}
+                aria-expanded={showMenu}
+                aria-haspopup="menu"
+                className="inline-flex items-center justify-center rounded-lg border border-transparent px-4 py-2.5 text-sm font-medium leading-5 text-white shadow-sm outline-none hover:bg-primary-300 focus:ring-2 focus:ring-primary-100"
               >
                 <HamburgerIcon />
               </button>
 
               {showMenu && (
-                <div
-                  className="
-                    absolute
-                    right-0
-                    top-full
-                    z-50
-                    mt-2
-                    w-60
-                    max-w-[calc(100vw-1rem)]
-                    overflow-hidden
-                    rounded-xl
-                    border
-                    border-slate-200
-                    bg-white
-                    shadow-xl
-                    "
-                >
-                  {TAG_CONSTANTS.map((tag) => {
-                    const active = pathname === TAG_PATHS[tag];
+                <div className="absolute right-0 z-50 mt-2 w-44 rounded-lg border border-primary-200 bg-background shadow-lg">
+                  <ul className="p-2 text-sm font-medium text-foreground">
+                    {TAG_CONSTANTS.map((tag) => {
+                      const active = pathname === TAG_PATHS[tag];
 
-                    return (
-                      <button
-                        key={tag}
-                        onClick={() => {
-                          router.push(TAG_PATHS[tag]);
-                          setShowMenu(false);
-                        }}
-                        className={`
-                          flex
-                          w-full
-                          items-center
-                          px-5
-                          py-3
-                          text-left
-                          text-sm
-                          transition-colors
-                          hover:bg-primary-50
-
-                          ${
-                            active
-                              ? 'bg-primary-100 font-semibold text-primary-900'
-                              : 'text-slate-700'
-                          }
-                        `}
-                      >
-                        {tag}
-                      </button>
-                    );
-                  })}
+                      return (
+                        <li key={tag}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              router.push(TAG_PATHS[tag]);
+                              setShowMenu(false);
+                            }}
+                            className={`inline-flex w-full items-center rounded-md p-2 text-left transition-colors hover:bg-primary-100 hover:text-primary-700 ${
+                              active
+                                ? 'bg-primary-100 font-semibold text-primary-700'
+                                : ''
+                            }`}
+                          >
+                            {tag}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
               )}
             </div>
