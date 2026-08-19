@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 
 const themes = [
@@ -13,19 +12,6 @@ const themes = [
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="h-9 w-20 sm:w-32 rounded-lg border border-primary-200 bg-background px-3 flex items-center text-xs sm:text-sm">
-        Amber
-      </div>
-    );
-  }
 
   return (
     <select

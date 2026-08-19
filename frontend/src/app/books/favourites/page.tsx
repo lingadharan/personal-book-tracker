@@ -22,23 +22,22 @@ export default function Favorites() {
       limit: 10,
     });
 
-  const getReadingBooks = async () => {
-    const response = await fetch(
-      `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const responseReading: IBooksApiResponse = await response.json();
-    if (!responseReading.success) return;
-    setCompletedBooks(responseReading.data);
-    setPagination(responseReading.pagination);
-  };
-
   useEffect(() => {
+    const getReadingBooks = async () => {
+      const response = await fetch(
+        `${env.backendURL}/books?category=reading&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const responseReading: IBooksApiResponse = await response.json();
+      if (!responseReading.success) return;
+      setCompletedBooks(responseReading.data);
+      setPagination(responseReading.pagination);
+    };
     void getReadingBooks();
   }, [pageNumber, favouriteFilterOptions]);
 

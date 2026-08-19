@@ -11,11 +11,11 @@ vi.mock('next/navigation', () => ({
   }),
 }));
 
-vi.mock('next/image', () => ({
-  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img {...props} />
-  ),
-}));
+// vi.mock('next/image', () => ({
+//   default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+//     <img {...props} />
+//   ),
+// }));
 
 describe('Header Component', () => {
   beforeEach(() => {
