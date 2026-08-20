@@ -47,3 +47,36 @@ export interface DialogProps {
   onClose: () => void;
   children: React.ReactNode;
 }
+
+export interface DashboardBook {
+  _id: string;
+  title: string;
+  author: string;
+  totalPage?: number;
+  currentPage?: number;
+}
+
+export interface BookCategoryCount {
+  _id: 'reading' | 'read' | 'interest' | 'favourite';
+  count: number;
+}
+
+export interface BookSummary {
+  totalBooks: Array<{ count: number }>;
+  counts: BookCategoryCount[];
+}
+
+export interface BookDashboardData {
+  summary: BookSummary;
+  readingBooks: DashboardBook[];
+  recentlyRead: DashboardBook[];
+  interestBooks: DashboardBook[];
+  favouriteBooks: DashboardBook[];
+}
+
+export interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+}
+
+export type BookDashboardResponse = ApiResponse<BookDashboardData>;

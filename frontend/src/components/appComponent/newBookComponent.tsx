@@ -134,8 +134,6 @@ export default function NewBookComponent() {
     return <p>Loading... New Book Page!!!</p>;
   }
 
-  console.log('newBookDetails: ', newBookDetails);
-
   return (
     <div className="min-h-screen bg-primary-100 px-4 py-8 sm:px-6 lg:px-8">
       <form
