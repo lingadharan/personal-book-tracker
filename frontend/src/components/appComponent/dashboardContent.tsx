@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/context/authContext';
 import { BookDashboardResponse } from '@/types/interfaces';
+import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -43,7 +44,7 @@ export default function DashBoardContent() {
   }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading || !dashboardDetails) {
-    return <p>Loading... Dashboard!!!</p>;
+    return <Loader />;
   }
 
   const { summary, readingBooks, recentlyRead, interestBooks, favouriteBooks } =

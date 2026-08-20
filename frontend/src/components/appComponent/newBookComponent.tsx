@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuth } from '@/context/authContext';
+import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
 import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect } from 'react';
@@ -37,6 +38,7 @@ export default function NewBookComponent() {
   const [newBookDetails, setNewBookDetails] = useState<IBook>(
     initialNewBookDetails
   );
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -67,6 +69,7 @@ export default function NewBookComponent() {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const { author, title, notes, category, currentPage, totalPage } =
         newBookDetails;
@@ -115,6 +118,8 @@ export default function NewBookComponent() {
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -131,7 +136,7 @@ export default function NewBookComponent() {
   }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
-    return <p>Loading... New Book Page!!!</p>;
+    return <Loader />;
   }
 
   return (
@@ -318,9 +323,17 @@ export default function NewBookComponent() {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white transition hover:bg-primary-700"
           >
-            Save Book
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-200 border-t-primary-600" />
+                Saving...
+              </span>
+            ) : (
+              'Add Book'
+            )}
           </button>
         </div>
       </form>

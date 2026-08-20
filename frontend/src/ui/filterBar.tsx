@@ -3,51 +3,11 @@
 import { IFilterOptions } from '@/types/interfaces';
 import { Dispatch, SetStateAction } from 'react';
 import Dropdown from './dropdown';
-
-const SORT_FIELD_OPTIONS = [
-  {
-    value: 'createdAt',
-    label: 'Created At',
-  },
-  {
-    value: 'title',
-    label: 'Book Name',
-  },
-  {
-    value: 'author',
-    label: 'Author',
-  },
-];
-
-const SORT_ORDER_OPTIONS = [
-  {
-    value: 'desc',
-    label: 'Descending (Newest)',
-  },
-  {
-    value: 'asc',
-    label: 'Ascending (Oldest)',
-  },
-];
-
-const PAGE_LIMIT_OPTIONS = [
-  {
-    value: '5',
-    label: '5',
-  },
-  {
-    value: '10',
-    label: '10',
-  },
-  {
-    value: '20',
-    label: '20',
-  },
-  {
-    value: '50',
-    label: '50',
-  },
-];
+import {
+  PAGE_LIMIT_OPTIONS,
+  SORT_FIELD_OPTIONS,
+  SORT_ORDER_OPTIONS,
+} from '@/utiles/constants';
 
 export const FilterBar = ({
   filterOptions,
@@ -69,7 +29,6 @@ export const FilterBar = ({
 
   return (
     <div className="flex flex-wrap items-center gap-4 rounded-xl bg-white p-4 shadow">
-      {/* Sort By */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-primary-950">Sort By:</span>
 
@@ -81,7 +40,6 @@ export const FilterBar = ({
         />
       </div>
 
-      {/* Order */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-primary-950">Order:</span>
 
@@ -93,7 +51,6 @@ export const FilterBar = ({
         />
       </div>
 
-      {/* Per Page */}
       <div className="flex items-center gap-2">
         <span className="text-sm font-semibold text-primary-950">
           Per Page:

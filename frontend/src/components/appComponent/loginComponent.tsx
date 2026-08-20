@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Suspense, useEffect } from 'react';
 import { useAuth } from '@/context/authContext';
 import GoogleIcon from '@/utiles/svg/googleIcon';
+import Loader from '@/ui/loader';
 
 function LoginContent() {
   const searchParams = useSearchParams();
@@ -24,11 +25,7 @@ function LoginContent() {
   }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-primary-100">
-        <p>Loading...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   return (
@@ -88,13 +85,7 @@ function LoginContent() {
 
 export default function LoginComponent() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={<Loader />}>
       <LoginContent />
     </Suspense>
   );
