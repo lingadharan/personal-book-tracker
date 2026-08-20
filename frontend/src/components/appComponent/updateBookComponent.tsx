@@ -13,6 +13,7 @@ function UpdateBookComponent() {
     _id: '',
     title: '',
     author: '',
+    totalPage: 0,
     currentPage: 0,
     durationToComplete: '0',
     suggestedBy: '',
@@ -63,22 +64,19 @@ function UpdateBookComponent() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    const isPageField = name === 'currentPage' || name === 'totalPage';
 
-    if (name !== 'currentPage') {
-      setNewBookDetails((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+    if (!isPageField) {
+      setNewBookDetails((prev) => ({ ...prev, [name]: value }));
       return;
     }
 
-    const currentPage = Number(value);
-
-    if (Number.isNaN(currentPage)) return;
+    const pageNumber = Number(value);
+    if (Number.isNaN(pageNumber)) return;
 
     setNewBookDetails((prev) => ({
       ...prev,
-      currentPage: Math.max(0, currentPage),
+      [name]: Math.max(0, pageNumber),
     }));
   };
 
@@ -92,7 +90,8 @@ function UpdateBookComponent() {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     try {
-      const { author, title, notes, category, currentPage } = updateBookDetails;
+      const { author, title, notes, category, currentPage, totalPage } =
+        updateBookDetails;
 
       const updateBookBody: Book = {
         _id,
@@ -101,6 +100,7 @@ function UpdateBookComponent() {
         notes,
         category,
         currentPage,
+        totalPage,
       };
 
       if (category === 'read') {
@@ -221,7 +221,21 @@ function UpdateBookComponent() {
 
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-primary-900">
-            Page No
+            Total Page No
+          </label>
+
+          <input
+            type="text"
+            name="totalPage"
+            value={updateBookDetails.totalPage}
+            onChange={handleInputChange}
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-primary-900">
+            Current Page No
           </label>
 
           <input

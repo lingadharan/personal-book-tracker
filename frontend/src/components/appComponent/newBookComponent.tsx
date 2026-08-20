@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 export interface IBook {
   title: string;
   author: string;
+  totalPage: number;
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
@@ -24,6 +25,7 @@ export default function NewBookComponent() {
   const initialNewBookDetails: IBook = {
     title: '',
     author: '',
+    totalPage: 0,
     currentPage: 0,
     durationToComplete: '0',
     suggestedBy: '',
@@ -40,22 +42,19 @@ export default function NewBookComponent() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    const isPageField = name === 'currentPage' || name === 'totalPage';
 
-    if (name !== 'currentPage') {
-      setNewBookDetails((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+    if (!isPageField) {
+      setNewBookDetails((prev) => ({ ...prev, [name]: value }));
       return;
     }
 
-    const currentPage = Number(value);
-
-    if (Number.isNaN(currentPage)) return;
+    const pageNumber = Number(value);
+    if (Number.isNaN(pageNumber)) return;
 
     setNewBookDetails((prev) => ({
       ...prev,
-      currentPage: Math.max(0, currentPage),
+      [name]: Math.max(0, pageNumber),
     }));
   };
 
@@ -69,13 +68,15 @@ export default function NewBookComponent() {
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     try {
-      const { author, title, notes, category, currentPage } = newBookDetails;
+      const { author, title, notes, category, currentPage, totalPage } =
+        newBookDetails;
       const newBookBody: Record<string, string | number | undefined> = {
         author,
         title,
         notes,
         category,
         currentPage,
+        totalPage,
       };
 
       if (category === 'read') {
@@ -132,6 +133,8 @@ export default function NewBookComponent() {
   if (isLoading) {
     return <p>Loading... New Book Page!!!</p>;
   }
+
+  console.log('newBookDetails: ', newBookDetails);
 
   return (
     <div className="min-h-screen bg-primary-100 px-4 py-8 sm:px-6 lg:px-8">
@@ -210,7 +213,21 @@ export default function NewBookComponent() {
 
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-primary-900">
-            Page No
+            Total Page No
+          </label>
+
+          <input
+            type="text"
+            name="totalPage"
+            value={newBookDetails.totalPage}
+            onChange={handleInputChange}
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-primary-900">
+            Current Page No
           </label>
 
           <input

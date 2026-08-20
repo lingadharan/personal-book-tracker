@@ -4,6 +4,7 @@ export interface Book {
   _id: string;
   title: string;
   author: string;
+  totalPage: number;
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;

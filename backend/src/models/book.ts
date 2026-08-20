@@ -4,6 +4,7 @@ export interface IBook {
   userId: mongoose.Types.ObjectId;
   title: string;
   author: string;
+  totalPage: number;
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
@@ -28,6 +29,12 @@ const bookSchema = new Schema<IBook>(
 
     author: {
       type: String,
+      required: true,
+      trim: true,
+    },
+
+    totalPage: {
+      type: Number,
       required: true,
       trim: true,
     },

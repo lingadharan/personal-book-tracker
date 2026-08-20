@@ -26,6 +26,10 @@ function validateBook(book: IBook, isUpdate = false): string | null {
     }
   }
 
+  if (!book.totalPage || typeof book.totalPage !== 'number') {
+    return 'Total page is required and must be a number';
+  }
+
   if (!isUpdate || book.author !== undefined) {
     if (
       !book.author ||
