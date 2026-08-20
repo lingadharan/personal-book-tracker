@@ -32,6 +32,16 @@ function UpdateBookComponent() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
+    if (isLoading) return;
+    if (!user || !isAuthenticated) {
+      router.replace('/login');
+    }
+  }, [isLoading, user, isAuthenticated, router]);
+
+  useEffect(() => {
+    if (isLoading || !isAuthenticated || !user || !_id) {
+      return;
+    }
     const getBook = async () => {
       const response = await fetch(`${env.backendURL}/get-book?_id=${_id}`, {
         method: 'GET',
@@ -40,19 +50,14 @@ function UpdateBookComponent() {
           'Content-Type': 'application/json',
         },
       });
-      const data = (await response.json()) as IUpdateApiResponse;
 
-      setNewBookDetails(data.data);
+      if (response.ok) {
+        const data = (await response.json()) as IUpdateApiResponse;
+        setNewBookDetails(data.data);
+      }
     };
     getBook();
-  }, [_id]);
-
-  useEffect(() => {
-    if (isLoading) return;
-    if (!user || !isAuthenticated) {
-      router.replace('/login');
-    }
-  }, [isLoading, user, isAuthenticated, router]);
+  }, [_id, isLoading, isAuthenticated, user]);
 
   if (isLoading) {
     return <Loader />;
