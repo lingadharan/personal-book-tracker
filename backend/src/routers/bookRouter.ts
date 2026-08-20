@@ -8,6 +8,7 @@ import {
   verifyUser,
 } from '../auth/auth.js';
 import { authenticateUser } from '../middleware/authenticateUser.js';
+import dashboardController from '../controller/dashboardController.js';
 
 const router = Router();
 const bookController = new BookController();
@@ -27,6 +28,9 @@ router.delete('/delete-book', authenticateUser, (req: Request, res: Response) =>
 );
 router.get('/books', authenticateUser, (req: Request, res: Response) =>
   bookController.filterBookController(req, res)
+);
+router.get('/dashboard', authenticateUser, (req: Request, res: Response) =>
+  dashboardController.getDashboardDetails(req, res)
 );
 
 // Auth

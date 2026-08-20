@@ -1,5 +1,6 @@
 'use client';
 import { useAuth } from '@/context/authContext';
+import Loader from '@/ui/loader';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -19,7 +20,7 @@ export default function BookLayout({
   }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
-    return <p>Loading... Books!!!</p>;
+    return <Loader />;
   }
   return <>{children}</>;
 }

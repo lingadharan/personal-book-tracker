@@ -2,6 +2,7 @@
 
 import { useAuth } from '@/context/authContext';
 import { Book, IUpdateApiResponse } from '@/types/interfaces';
+import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
@@ -13,6 +14,7 @@ function UpdateBookComponent() {
     _id: '',
     title: '',
     author: '',
+    totalPage: 0,
     currentPage: 0,
     durationToComplete: '0',
     suggestedBy: '',
@@ -27,6 +29,7 @@ function UpdateBookComponent() {
   const [updateBookDetails, setNewBookDetails] = useState<Book>(
     initialNewBookDetails
   );
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   useEffect(() => {
     const getBook = async () => {
@@ -52,7 +55,7 @@ function UpdateBookComponent() {
   }, [isLoading, user, isAuthenticated, router]);
 
   if (isLoading) {
-    return <p>Loading... Update Book!!!</p>;
+    return <Loader />;
   }
 
   if (!_id) {
@@ -63,22 +66,19 @@ function UpdateBookComponent() {
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    const isPageField = name === 'currentPage' || name === 'totalPage';
 
-    if (name !== 'currentPage') {
-      setNewBookDetails((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+    if (!isPageField) {
+      setNewBookDetails((prev) => ({ ...prev, [name]: value }));
       return;
     }
 
-    const currentPage = Number(value);
-
-    if (Number.isNaN(currentPage)) return;
+    const pageNumber = Number(value);
+    if (Number.isNaN(pageNumber)) return;
 
     setNewBookDetails((prev) => ({
       ...prev,
-      currentPage: Math.max(0, currentPage),
+      [name]: Math.max(0, pageNumber),
     }));
   };
 
@@ -91,8 +91,10 @@ function UpdateBookComponent() {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
-      const { author, title, notes, category, currentPage } = updateBookDetails;
+      const { author, title, notes, category, currentPage, totalPage } =
+        updateBookDetails;
 
       const updateBookBody: Book = {
         _id,
@@ -101,6 +103,7 @@ function UpdateBookComponent() {
         notes,
         category,
         currentPage,
+        totalPage,
       };
 
       if (category === 'read') {
@@ -136,6 +139,8 @@ function UpdateBookComponent() {
       router.push('/');
     } catch (error) {
       console.error('Error submitting book:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -221,7 +226,21 @@ function UpdateBookComponent() {
 
         <div className="mb-6">
           <label className="mb-2 block font-semibold text-primary-900">
-            Page No
+            Total Page No
+          </label>
+
+          <input
+            type="text"
+            name="totalPage"
+            value={updateBookDetails.totalPage}
+            onChange={handleInputChange}
+            className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="mb-2 block font-semibold text-primary-900">
+            Current Page No
           </label>
 
           <input
@@ -316,7 +335,14 @@ function UpdateBookComponent() {
             type="submit"
             className="rounded-lg bg-primary-600 px-6 py-3 font-semibold text-white transition hover:bg-primary-700"
           >
-            Update Book
+            {isSubmitting ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-200 border-t-primary-600" />
+                Saving...
+              </span>
+            ) : (
+              'Update Book'
+            )}
           </button>
         </div>
       </form>
@@ -326,13 +352,7 @@ function UpdateBookComponent() {
 
 export default function UpdateBook() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen bg-black text-white p-6 font-mono flex justify-center items-center">
-          Loading book details...
-        </div>
-      }
-    >
+    <Suspense fallback={<Loader />}>
       <UpdateBookComponent />
     </Suspense>
   );

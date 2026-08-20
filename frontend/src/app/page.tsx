@@ -1,4 +1,4 @@
-import DashBoardContent from '@/components/contents/dashboardContent';
+import DashBoardContent from '@/components/appComponent/dashboardContent';
 import { Metadata } from 'next';
 import Script from 'next/script';
 
