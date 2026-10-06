@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { env } from '@/utiles/env';
 import { useAuth } from '@/context/authContext';
-import { TAG_CONSTANTS, TAG_PATHS } from '@/utiles/constants';
+import { TAG_CONSTANTS, TAG_PATHS, API_ROUTES } from '@/utiles/constants';
 import PlusIcon from '@/utiles/svg/plusIcon';
 import HamburgerIcon from '@/utiles/svg/hamburgerIcon';
 import PBTLogo from '@/utiles/svg/PBTLogo';
@@ -28,12 +28,12 @@ export default function Header() {
   });
 
   const handleGoogleLogin = () => {
-    window.location.href = `${env.backendURL}/auth/google`;
+    window.location.href = `${env.backendURL}${API_ROUTES.AUTH_GOOGLE}`;
   };
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${env.backendURL}/auth/logout`, {
+      const response = await fetch(`${env.backendURL}${API_ROUTES.AUTH_LOGOUT}`, {
         method: 'POST',
         credentials: 'include',
       });

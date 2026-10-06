@@ -1,14 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
-
-interface DialogProps {
-  open: boolean;
-  title: string;
-  onClose: () => void;
-  children: ReactNode;
-  footer?: ReactNode;
-}
+import { DialogProps } from '@/types/interfaces';
 
 export default function Dialog({
   open,

@@ -4,8 +4,32 @@ import { useAuth } from '@/context/authContext';
 import { BookDashboardResponse } from '@/types/interfaces';
 import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
+import { API_ROUTES } from '@/utiles/constants';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+const CATEGORY_CARD_CONFIG = [
+  {
+    key: 'reading' as const,
+    title: 'Reading',
+    emptyMessage: 'No reading books.',
+  },
+  {
+    key: 'read' as const,
+    title: 'Read',
+    emptyMessage: 'No completed books.',
+  },
+  {
+    key: 'interest' as const,
+    title: 'Interesting Books',
+    emptyMessage: 'No interesting books.',
+  },
+  {
+    key: 'favourite' as const,
+    title: 'Favourite Books',
+    emptyMessage: 'No favourite books.',
+  },
+] as const;
 
 export default function DashBoardContent() {
   const router = useRouter();
@@ -24,7 +48,7 @@ export default function DashBoardContent() {
 
     const getDashboardDetails = async () => {
       try {
-        const response = await fetch(`${env.backendURL}/dashboard`, {
+        const response = await fetch(`${env.backendURL}${API_ROUTES.DASHBOARD}`, {
           credentials: 'include',
         });
 
@@ -61,32 +85,19 @@ export default function DashBoardContent() {
       summary.counts.find((item) => item._id === 'favourite')?.count ?? 0,
   };
 
-  const categoryCards = [
-    {
-      title: 'Reading',
-      books: readingBooks,
-      count: counts.reading,
-      emptyMessage: 'No reading books.',
-    },
-    {
-      title: 'Read',
-      books: recentlyRead,
-      count: counts.read,
-      emptyMessage: 'No completed books.',
-    },
-    {
-      title: 'Interesting Books',
-      books: interestBooks,
-      count: counts.interest,
-      emptyMessage: 'No interesting books.',
-    },
-    {
-      title: 'Favourite Books',
-      books: favouriteBooks,
-      count: counts.favourite,
-      emptyMessage: 'No favourite books.',
-    },
-  ];
+  const booksMap = {
+    reading: readingBooks,
+    read: recentlyRead,
+    interest: interestBooks,
+    favourite: favouriteBooks,
+  };
+
+  const categoryCards = CATEGORY_CARD_CONFIG.map((cfg) => ({
+    title: cfg.title,
+    books: booksMap[cfg.key],
+    count: counts[cfg.key],
+    emptyMessage: cfg.emptyMessage,
+  }));
 
   return (
     <div className="space-y-4 rounded-2xl bg-primary-100 p-3 sm:p-4">

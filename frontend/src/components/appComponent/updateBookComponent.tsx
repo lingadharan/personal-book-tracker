@@ -1,33 +1,31 @@
 'use client';
 
 import { useAuth } from '@/context/authContext';
-import { Book, IUpdateApiResponse } from '@/types/interfaces';
+import { Book, BookCategory, IUpdateApiResponse } from '@/types/interfaces';
 import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
+import {
+  API_ROUTES,
+  BOOK_CATEGORIES,
+  INITIAL_BOOK_FORM_STATE,
+  READ_STATUS_OPTIONS,
+} from '@/utiles/constants';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect, Suspense } from 'react';
 import { toast } from 'sonner';
 
+const initialUpdateBookDetails: Book = {
+  _id: '',
+  ...INITIAL_BOOK_FORM_STATE,
+};
+
 function UpdateBookComponent() {
   const { user, isLoading, isAuthenticated } = useAuth();
-  const initialNewBookDetails: Book = {
-    _id: '',
-    title: '',
-    author: '',
-    totalPage: 0,
-    currentPage: 0,
-    durationToComplete: '0',
-    suggestedBy: '',
-    readStatus: 'completed',
-    notes: '',
-    category: 'reading',
-  };
-  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
   const searchParams = useSearchParams();
   const _id = searchParams.get('_id');
   const router = useRouter();
   const [updateBookDetails, setNewBookDetails] = useState<Book>(
-    initialNewBookDetails
+    initialUpdateBookDetails
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -43,13 +41,16 @@ function UpdateBookComponent() {
       return;
     }
     const getBook = async () => {
-      const response = await fetch(`${env.backendURL}/get-book?_id=${_id}`, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        `${env.backendURL}${API_ROUTES.GET_BOOK}?_id=${_id}`,
+        {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (response.ok) {
         const data = (await response.json()) as IUpdateApiResponse;
@@ -87,7 +88,7 @@ function UpdateBookComponent() {
     }));
   };
 
-  const handleCategoryChange = (category: Book['category']) => {
+  const handleCategoryChange = (category: BookCategory) => {
     setNewBookDetails((prev) => ({
       ...prev,
       category,
@@ -119,14 +120,14 @@ function UpdateBookComponent() {
       } else if (category === 'favourite') {
         updateBookBody.readStatus = updateBookDetails.readStatus;
       } else if (category !== 'reading') {
-        setNewBookDetails(initialNewBookDetails);
+        setNewBookDetails(initialUpdateBookDetails);
         router.push('/');
         throw new Error(
           'Something went wrong on update book submission: Invalid category.'
         );
       }
 
-      const response = await fetch(`${env.backendURL}/update-book`, {
+      const response = await fetch(`${env.backendURL}${API_ROUTES.UPDATE_BOOK}`, {
         method: 'PUT',
         credentials: 'include',
         headers: {
@@ -139,7 +140,7 @@ function UpdateBookComponent() {
         throw new Error(`Server responded with status: ${response.status}`);
       }
 
-      setNewBookDetails(initialNewBookDetails);
+      setNewBookDetails(initialUpdateBookDetails);
       toast.success('Book updated successfully!');
       router.push('/');
     } catch (error) {
@@ -150,7 +151,7 @@ function UpdateBookComponent() {
   };
 
   const handleCancel = () => {
-    setNewBookDetails(initialNewBookDetails);
+    setNewBookDetails(initialUpdateBookDetails);
     router.push('/');
   };
 
@@ -204,28 +205,26 @@ function UpdateBookComponent() {
           </label>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {(['Reading', 'Read', 'Interest', 'Favourite'] as const).map(
-              (cat) => (
-                <label
-                  key={cat}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-3 transition hover:bg-primary-100"
-                >
-                  <input
-                    type="radio"
-                    name="category"
-                    required
-                    checked={updateBookDetails.category === cat.toLowerCase()}
-                    onChange={() =>
-                      handleCategoryChange(
-                        cat.toLowerCase() as Book['category']
-                      )
-                    }
-                    className="accent-primary-600"
-                  />
-                  <span>{cat}</span>
-                </label>
-              )
-            )}
+            {BOOK_CATEGORIES.map((cat) => (
+              <label
+                key={cat}
+                className="flex cursor-pointer items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-3 transition hover:bg-primary-100"
+              >
+                <input
+                  type="radio"
+                  name="category"
+                  required
+                  checked={updateBookDetails.category === cat.toLowerCase()}
+                  onChange={() =>
+                    handleCategoryChange(
+                      cat.toLowerCase() as BookCategory
+                    )
+                  }
+                  className="accent-primary-600"
+                />
+                <span>{cat}</span>
+              </label>
+            ))}
           </div>
         </div>
 
@@ -303,7 +302,7 @@ function UpdateBookComponent() {
               onChange={handleInputChange}
               className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             >
-              {readStatusOptions.map((status) => (
+              {READ_STATUS_OPTIONS.map((status) => (
                 <option key={status} value={status}>
                   {status}
                 </option>

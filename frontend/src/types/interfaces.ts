@@ -1,5 +1,8 @@
 import { TAG_CONSTANTS } from '@/utiles/constants';
 
+export type BookCategory = 'reading' | 'read' | 'interest' | 'favourite';
+export type ReadStatus = 'completed' | 'need-to-plan' | 'in-progress';
+
 export interface Book {
   _id: string;
   title: string;
@@ -8,10 +11,12 @@ export interface Book {
   currentPage?: number;
   durationToComplete?: string;
   suggestedBy?: string;
-  readStatus?: 'completed' | 'plan to read' | 'in Progress';
+  readStatus?: ReadStatus;
   notes?: string;
-  category: 'reading' | 'read' | 'interest' | 'favourite';
+  category: BookCategory;
 }
+
+export type BookFormData = Omit<Book, '_id'> & { _id?: string };
 
 export type SelectedTag = (typeof TAG_CONSTANTS)[number];
 
@@ -46,6 +51,38 @@ export interface DialogProps {
   title: string;
   onClose: () => void;
   children: React.ReactNode;
+  footer?: React.ReactNode;
+}
+
+export interface DropdownOption {
+  value: string;
+  label: string;
+}
+
+export interface DropdownProps {
+  value: string;
+  options: DropdownOption[];
+  onChange: (value: string) => void;
+  width?: string;
+}
+
+export interface IUser {
+  _id: string;
+  email: string;
+  name?: string;
+  avatar?: string;
+  provider: string;
+}
+
+export interface IAuthContext {
+  user: IUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+}
+
+export interface IAuthResponse {
+  isAuthenticated: boolean;
+  user: IUser;
 }
 
 export interface DashboardBook {

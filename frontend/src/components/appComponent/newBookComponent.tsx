@@ -3,40 +3,23 @@
 import { useAuth } from '@/context/authContext';
 import Loader from '@/ui/loader';
 import { env } from '@/utiles/env';
+import {
+  API_ROUTES,
+  BOOK_CATEGORIES,
+  INITIAL_BOOK_FORM_STATE,
+  READ_STATUS_OPTIONS,
+} from '@/utiles/constants';
+import { BookCategory, BookFormData } from '@/types/interfaces';
 import { useRouter } from 'next/navigation';
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { toast } from 'sonner';
 
-export interface IBook {
-  title: string;
-  author: string;
-  totalPage: number;
-  currentPage?: number;
-  durationToComplete?: string;
-  suggestedBy?: string;
-  readStatus?: 'completed' | 'need-to-plan' | 'in-progress';
-  notes?: string;
-  category: 'reading' | 'read' | 'interest' | 'favourite';
-}
-
 export default function NewBookComponent() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const readStatusOptions = ['completed', 'in-progress', 'need-to-plan'];
-  const initialNewBookDetails: IBook = {
-    title: '',
-    author: '',
-    totalPage: 0,
-    currentPage: 0,
-    durationToComplete: '0',
-    suggestedBy: '',
-    readStatus: 'completed',
-    notes: '',
-    category: 'reading',
-  };
 
-  const [newBookDetails, setNewBookDetails] = useState<IBook>(
-    initialNewBookDetails
+  const [newBookDetails, setNewBookDetails] = useState<BookFormData>(
+    INITIAL_BOOK_FORM_STATE
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -60,7 +43,7 @@ export default function NewBookComponent() {
     }));
   };
 
-  const handleCategoryChange = (category: IBook['category']) => {
+  const handleCategoryChange = (category: BookCategory) => {
     setNewBookDetails((prev) => ({
       ...prev,
       category,
@@ -89,7 +72,7 @@ export default function NewBookComponent() {
       } else if (category === 'favourite') {
         newBookBody.readStatus = newBookDetails.readStatus;
       } else if (category !== 'reading') {
-        setNewBookDetails(initialNewBookDetails);
+        setNewBookDetails(INITIAL_BOOK_FORM_STATE);
         router.push('/');
         throw new Error(
           'Something went wrong on new book submission: Invalid category.'
@@ -100,7 +83,7 @@ export default function NewBookComponent() {
         books: [newBookBody],
       };
 
-      const response = await fetch(`${env.backendURL}/add-book`, {
+      const response = await fetch(`${env.backendURL}${API_ROUTES.ADD_BOOK}`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -113,7 +96,7 @@ export default function NewBookComponent() {
         throw new Error(`Server responded with status: ${response.status}`);
       }
 
-      setNewBookDetails(initialNewBookDetails);
+      setNewBookDetails(INITIAL_BOOK_FORM_STATE);
       toast.success('Book added successfully!');
       router.push('/');
     } catch (error) {
@@ -124,7 +107,7 @@ export default function NewBookComponent() {
   };
 
   const handleCancel = () => {
-    setNewBookDetails(initialNewBookDetails);
+    setNewBookDetails(INITIAL_BOOK_FORM_STATE);
     router.push('/');
   };
 
@@ -189,28 +172,26 @@ export default function NewBookComponent() {
           </label>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {(['Reading', 'Read', 'Interest', 'Favourite'] as const).map(
-              (cat) => (
-                <label
-                  key={cat}
-                  className="flex cursor-pointer items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-3 transition hover:bg-primary-100"
-                >
-                  <input
-                    type="radio"
-                    name="category"
-                    required
-                    checked={newBookDetails.category === cat.toLowerCase()}
-                    onChange={() =>
-                      handleCategoryChange(
-                        cat.toLowerCase() as IBook['category']
-                      )
-                    }
-                    className="accent-primary-600"
-                  />
-                  <span>{cat}</span>
-                </label>
-              )
-            )}
+            {BOOK_CATEGORIES.map((cat) => (
+              <label
+                key={cat}
+                className="flex cursor-pointer items-center gap-2 rounded-lg border border-primary-200 bg-primary-50 p-3 transition hover:bg-primary-100"
+              >
+                <input
+                  type="radio"
+                  name="category"
+                  required
+                  checked={newBookDetails.category === cat.toLowerCase()}
+                  onChange={() =>
+                    handleCategoryChange(
+                      cat.toLowerCase() as BookCategory
+                    )
+                  }
+                  className="accent-primary-600"
+                />
+                <span>{cat}</span>
+              </label>
+            ))}
           </div>
         </div>
 
@@ -288,7 +269,7 @@ export default function NewBookComponent() {
               onChange={handleInputChange}
               className="w-full rounded-lg border border-primary-300 px-4 py-3 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-200"
             >
-              {readStatusOptions.map((status) => (
+              {READ_STATUS_OPTIONS.map((status) => (
                 <option key={status} value={status}>
                   {status}
                 </option>

@@ -1,5 +1,6 @@
 'use client';
 import { env } from '@/utiles/env';
+import { API_ROUTES } from '@/utiles/constants';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Suspense, useEffect } from 'react';
@@ -14,7 +15,7 @@ function LoginContent() {
   const error = searchParams.get('error');
 
   const handleGoogleLogin = () => {
-    window.location.href = `${env.backendURL}/auth/google`;
+    window.location.href = `${env.backendURL}${API_ROUTES.AUTH_GOOGLE}`;
   };
 
   useEffect(() => {
