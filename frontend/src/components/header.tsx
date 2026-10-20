@@ -33,10 +33,13 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${env.backendURL}${API_ROUTES.AUTH_LOGOUT}`, {
-        method: 'POST',
-        credentials: 'include',
-      });
+      const response = await fetch(
+        `${env.backendURL}${API_ROUTES.AUTH_LOGOUT}`,
+        {
+          method: 'POST',
+          credentials: 'include',
+        }
+      );
 
       if (response.ok) {
         router.replace('/login');

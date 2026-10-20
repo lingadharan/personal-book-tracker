@@ -183,9 +183,7 @@ export default function NewBookComponent() {
                   required
                   checked={newBookDetails.category === cat.toLowerCase()}
                   onChange={() =>
-                    handleCategoryChange(
-                      cat.toLowerCase() as BookCategory
-                    )
+                    handleCategoryChange(cat.toLowerCase() as BookCategory)
                   }
                   className="accent-primary-600"
                 />

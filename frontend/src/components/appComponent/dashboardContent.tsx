@@ -48,9 +48,12 @@ export default function DashBoardContent() {
 
     const getDashboardDetails = async () => {
       try {
-        const response = await fetch(`${env.backendURL}${API_ROUTES.DASHBOARD}`, {
-          credentials: 'include',
-        });
+        const response = await fetch(
+          `${env.backendURL}${API_ROUTES.DASHBOARD}`,
+          {
+            credentials: 'include',
+          }
+        );
 
         if (!response.ok) {
           throw new Error('Failed to fetch dashboard details');

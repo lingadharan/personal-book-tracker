@@ -127,14 +127,17 @@ function UpdateBookComponent() {
         );
       }
 
-      const response = await fetch(`${env.backendURL}${API_ROUTES.UPDATE_BOOK}`, {
-        method: 'PUT',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updateBookBody),
-      });
+      const response = await fetch(
+        `${env.backendURL}${API_ROUTES.UPDATE_BOOK}`,
+        {
+          method: 'PUT',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updateBookBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Server responded with status: ${response.status}`);
@@ -216,9 +219,7 @@ function UpdateBookComponent() {
                   required
                   checked={updateBookDetails.category === cat.toLowerCase()}
                   onChange={() =>
-                    handleCategoryChange(
-                      cat.toLowerCase() as BookCategory
-                    )
+                    handleCategoryChange(cat.toLowerCase() as BookCategory)
                   }
                   className="accent-primary-600"
                 />
