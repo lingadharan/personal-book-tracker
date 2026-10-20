@@ -94,3 +94,75 @@ export const PAGE_LIMIT_OPTIONS = [
     label: '50',
   },
 ];
+
+export const THEMES = [
+  { value: 'amber', label: 'Amber' },
+  { value: 'blue', label: 'Blue' },
+  { value: 'emerald', label: 'Emerald' },
+  { value: 'yellow', label: 'Yellow' },
+  { value: 'green', label: 'Green' },
+] as const;
+
+export const DEFAULT_THEME = 'amber';
+
+export const THEME_VALUES: Record<string, string> = {
+  amber: 'amber',
+  blue: 'blue',
+  emerald: 'emerald',
+  yellow: 'yellow',
+  green: 'green',
+};
+
+export const BOOK_CATEGORIES = [
+  'Reading',
+  'Read',
+  'Interest',
+  'Favourite',
+] as const;
+
+export const READ_STATUS_OPTIONS = [
+  'completed',
+  'in-progress',
+  'need-to-plan',
+] as const;
+
+export const INITIAL_BOOK_FORM_STATE = {
+  title: '',
+  author: '',
+  totalPage: 0,
+  currentPage: 0,
+  durationToComplete: '0',
+  suggestedBy: '',
+  readStatus: 'completed' as const,
+  notes: '',
+  category: 'reading' as const,
+};
+
+export const DEFAULT_FILTER_OPTIONS = {
+  field: 'createdAt',
+  sort: 'desc' as const,
+  limit: 10 as const,
+};
+
+export const API_ROUTES = {
+  AUTH_GOOGLE: '/auth/google',
+  AUTH_LOGOUT: '/auth/logout',
+  AUTH_ME: '/auth/me',
+  DASHBOARD: '/dashboard',
+  BOOKS: '/books',
+  ADD_BOOK: '/add-book',
+  UPDATE_BOOK: '/update-book',
+  DELETE_BOOK: '/delete-book',
+  GET_BOOK: '/get-book',
+} as const;
+
+export const APP_ROUTES = {
+  HOME: '/',
+  LOGIN: '/login',
+  NEW_BOOK: '/new-book',
+  UPDATE_BOOK: '/update-book',
+  READING: '/books/reading',
+  COMPLETED: '/books/completed',
+  WISHLIST: '/books/wishlist',
+  FAVOURITES: '/books/favourites',
+} as const;

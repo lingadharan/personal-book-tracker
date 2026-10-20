@@ -1,23 +1,22 @@
 import type mongoose from 'mongoose';
-import type { IFilterBookRequestDTO } from '../dto/filterBook.dto.js';
 import type { IUpdateBookDetailsDTO } from '../dto/updateBookDetailsRequest.dto.js';
 import Book, { type IBook } from '../models/book.js';
 
 export default class BookRepository {
   async createBooks(books: IBook[]): Promise<IBook[]> {
-    return await Book.insertMany(books);
+    return Book.insertMany(books);
   }
 
   async getBookById(id: string): Promise<IBook | null> {
-    return await Book.findOne({ _id: id });
+    return Book.findOne({ _id: id });
   }
 
   async getAllBooks(): Promise<IBook[] | null> {
-    return await Book.find();
+    return Book.find();
   }
 
   async updateBook(updateData: IUpdateBookDetailsDTO): Promise<IBook | null> {
-    return await Book.findOneAndUpdate(
+    return Book.findOneAndUpdate(
       { _id: updateData._id, userId: updateData.userId },
       updateData,
       {
@@ -34,7 +33,7 @@ export default class BookRepository {
     _id: string;
     userId: mongoose.Types.ObjectId;
   }): Promise<IBook | null> {
-    return await Book.findOneAndDelete({ _id: _id, userId: userId });
+    return Book.findOneAndDelete({ _id, userId });
   }
 
   async filterBookRepository(

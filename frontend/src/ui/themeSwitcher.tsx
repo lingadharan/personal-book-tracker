@@ -4,14 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
 import useClickOutside from '@/hooks/useClickOutside';
 import DropdownArrowIcon from '@/utiles/svg/dropDownArrowIcon';
-
-const themes = [
-  { value: 'amber', label: 'Amber' },
-  { value: 'blue', label: 'Blue' },
-  { value: 'emerald', label: 'Emerald' },
-  { value: 'yellow', label: 'Yellow' },
-  { value: 'green', label: 'Green' },
-];
+import { THEMES } from '@/utiles/constants';
 
 export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
@@ -21,7 +14,7 @@ export function ThemeSwitcher() {
   const [mounted, setMounted] = useState(false);
 
   const selectedTheme =
-    themes.find((item) => item.value === theme) ?? themes[0];
+    THEMES.find((item) => item.value === theme) ?? THEMES[0];
 
   useClickOutside(dropdownRef, () => {
     setIsOpen(false);
@@ -64,7 +57,7 @@ export function ThemeSwitcher() {
             role="listbox"
             aria-label="Select theme"
           >
-            {themes.map((item) => (
+            {THEMES.map((item) => (
               <li key={item.value}>
                 <button
                   type="button"

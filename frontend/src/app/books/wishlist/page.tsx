@@ -9,6 +9,7 @@ import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
+import { API_ROUTES, DEFAULT_FILTER_OPTIONS } from '@/utiles/constants';
 import { useEffect, useState } from 'react';
 
 export default function Wishlist() {
@@ -16,16 +17,12 @@ export default function Wishlist() {
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [wishlistFilterOptions, setWishlistFilterOptions] =
-    useState<IFilterOptions>({
-      field: 'createdAt',
-      sort: 'desc',
-      limit: 10,
-    });
+    useState<IFilterOptions>(DEFAULT_FILTER_OPTIONS);
 
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=interest&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
+        `${env.backendURL}${API_ROUTES.BOOKS}?category=interest&page=${pageNumber}&sort=${wishlistFilterOptions.sort}&field=${wishlistFilterOptions.field}&limit=${wishlistFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',

@@ -41,7 +41,7 @@ export default function Table({
   tag,
   book,
 }: {
-  tag: string;
+  tag: Exclude<SelectedTag, 'Overview'>;
   book: Book[] | null;
 }) {
   const router = useRouter();

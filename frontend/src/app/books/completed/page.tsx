@@ -9,6 +9,7 @@ import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
+import { API_ROUTES, DEFAULT_FILTER_OPTIONS } from '@/utiles/constants';
 import { useEffect, useState } from 'react';
 
 export default function Completed() {
@@ -16,16 +17,12 @@ export default function Completed() {
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [completedFilterOptions, setCompletedFilterOptions] =
-    useState<IFilterOptions>({
-      field: 'createdAt',
-      sort: 'desc',
-      limit: 10,
-    });
+    useState<IFilterOptions>(DEFAULT_FILTER_OPTIONS);
 
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=read&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
+        `${env.backendURL}${API_ROUTES.BOOKS}?category=read&page=${pageNumber}&sort=${completedFilterOptions.sort}&field=${completedFilterOptions.field}&limit=${completedFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',

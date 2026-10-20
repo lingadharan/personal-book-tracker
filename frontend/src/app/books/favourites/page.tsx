@@ -9,23 +9,20 @@ import FilterBar from '@/ui/filterBar';
 import Pagination from '@/ui/pagination';
 import Table from '@/ui/table';
 import { env } from '@/utiles/env';
+import { API_ROUTES, DEFAULT_FILTER_OPTIONS } from '@/utiles/constants';
 import { useEffect, useState } from 'react';
 
 export default function Favorites() {
-  const [completedBooks, setCompletedBooks] = useState<null | Book[]>(null);
+  const [favouriteBooks, setFavouriteBooks] = useState<null | Book[]>(null);
   const [pagination, setPagination] = useState<null | IBookPagination>(null);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [favouriteFilterOptions, setFavouriteFilterOptions] =
-    useState<IFilterOptions>({
-      field: 'createdAt',
-      sort: 'desc',
-      limit: 10,
-    });
+    useState<IFilterOptions>(DEFAULT_FILTER_OPTIONS);
 
   useEffect(() => {
     const getReadingBooks = async () => {
       const response = await fetch(
-        `${env.backendURL}/books?category=favourite&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
+        `${env.backendURL}${API_ROUTES.BOOKS}?category=favourite&page=${pageNumber}&sort=${favouriteFilterOptions.sort}&field=${favouriteFilterOptions.field}&limit=${favouriteFilterOptions.limit}`,
         {
           method: 'GET',
           credentials: 'include',
@@ -36,13 +33,13 @@ export default function Favorites() {
       );
       const responseReading: IBooksApiResponse = await response.json();
       if (!responseReading.success) return;
-      setCompletedBooks(responseReading.data);
+      setFavouriteBooks(responseReading.data);
       setPagination(responseReading.pagination);
     };
     void getReadingBooks();
   }, [pageNumber, favouriteFilterOptions]);
 
-  if (!pagination || !completedBooks) {
+  if (!pagination || !favouriteBooks) {
     return <p>Something went wrong on Favourite page.</p>;
   }
 
@@ -58,7 +55,7 @@ export default function Favorites() {
         setFilterOptions={setFavouriteFilterOptions}
         setPageNumber={setPageNumber}
       />
-      <Table tag="Completed Books" book={completedBooks} />
+      <Table tag="Favorite Books" book={favouriteBooks} />
       <Pagination
         pagination={pagination}
         pageNumber={pageNumber}

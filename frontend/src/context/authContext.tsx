@@ -1,26 +1,11 @@
 'use client';
 
 import { env } from '@/utiles/env';
+import { API_ROUTES } from '@/utiles/constants';
 import { createContext, useContext, useEffect, useState } from 'react';
+import type { IUser, IAuthContext, IAuthResponse } from '@/types/interfaces';
 
-export interface IUser {
-  _id: string;
-  email: string;
-  name?: string;
-  avatar?: string;
-  provider: string;
-}
-
-export interface IAuthContext {
-  user: IUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-}
-
-export interface IAuthResponse {
-  isAuthenticated: boolean;
-  user: IUser;
-}
+export type { IUser, IAuthContext, IAuthResponse };
 
 const authContext = createContext<undefined | IAuthContext>(undefined);
 
@@ -36,7 +21,7 @@ export function AuthContextProvider({
   useEffect(() => {
     const refreshAuth = async () => {
       try {
-        const response = await fetch(`${env.backendURL}/auth/me`, {
+        const response = await fetch(`${env.backendURL}${API_ROUTES.AUTH_ME}`, {
           method: 'GET',
           credentials: 'include',
         });

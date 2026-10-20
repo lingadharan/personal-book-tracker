@@ -2,19 +2,8 @@
 
 import useClickOutside from '@/hooks/useClickOutside';
 import DropdownArrowIcon from '@/utiles/svg/dropDownArrowIcon';
+import { DropdownProps } from '@/types/interfaces';
 import { useRef, useState } from 'react';
-
-interface DropdownOption {
-  value: string;
-  label: string;
-}
-
-interface DropdownProps {
-  value: string;
-  options: DropdownOption[];
-  onChange: (value: string) => void;
-  width?: string;
-}
 
 export default function Dropdown({
   value,
