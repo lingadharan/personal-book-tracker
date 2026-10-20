@@ -16,7 +16,7 @@ export default class BookService {
   }
 
   async createBookDetails(books: IBook[]) {
-    return await this.bookRepository.createBooks(books);
+    return this.bookRepository.createBooks(books);
   }
 
   async getBookDetails(_id?: string): Promise<IBook | IBook[]> {
@@ -28,10 +28,7 @@ export default class BookService {
       return getBookByIdRepository;
     }
     const getAllBooksRepository = await this.bookRepository.getAllBooks();
-    if (
-      !getAllBooksRepository ||
-      (getAllBooksRepository && getAllBooksRepository.length === 0)
-    ) {
+    if (!getAllBooksRepository || getAllBooksRepository.length === 0) {
       throw new NotFoundError('Book not found');
     }
     return getAllBooksRepository;
@@ -62,8 +59,6 @@ export default class BookService {
   async filterBookService(
     filters: IFilterBookRequestDTO
   ): Promise<IFilterBookResponseDTO> {
-    const repository = new BookRepository();
-
     const {
       userId,
       page,
@@ -87,7 +82,7 @@ export default class BookService {
       [field]: sortOrder,
     };
 
-    const { data, totalCount } = await repository.filterBookRepository(
+    const { data, totalCount } = await this.bookRepository.filterBookRepository(
       queryFilter,
       sortOption,
       skip,

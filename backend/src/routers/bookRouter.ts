@@ -1,6 +1,5 @@
 import { Router, type Request, type Response } from 'express';
 import BookController from '../controller/bookcontroller.js';
-import UserController from '../controller/userController.js';
 import {
   googleCallback,
   logoutUser,

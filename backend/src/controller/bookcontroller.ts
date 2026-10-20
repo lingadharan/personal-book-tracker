@@ -192,13 +192,6 @@ export default class BookController {
         });
       }
 
-      if (!body._id) {
-        return res.status(400).json({
-          success: false,
-          message: `Validation failed: _id is required.`,
-        });
-      }
-
       const service = new BookService();
       const updatedBook = await service.updateBookDetails({
         ...body,

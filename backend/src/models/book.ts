@@ -1,4 +1,4 @@
-import mongoose, { Schema, type Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export interface IBook {
   userId: mongoose.Types.ObjectId;
@@ -36,7 +36,6 @@ const bookSchema = new Schema<IBook>(
     totalPage: {
       type: Number,
       required: true,
-      trim: true,
     },
 
     currentPage: {
